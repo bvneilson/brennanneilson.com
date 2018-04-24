@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-118085147-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-118085147-1');
+  </script>
 	<meta charset="utf-8">
   <meta name="description" content="Brennan Neilson personal website homepage.">
   <meta name="keywords" content="HTML,CSS,Web Developer,JavaScript,Code,Development">
@@ -123,13 +132,13 @@
   <script>
 
         function initMap() {
-          var orem = {lat: 40.2969, lng: -111.6946};
+          var saratoga = {lat: 40.3302, lng: -111.9045};
           var map = new google.maps.Map(document.getElementById('map'), {
               zoom: 10,
-              center: orem
+              center: saratoga
            });
           var marker = new google.maps.Marker({
-              position: orem,
+              position: saratoga,
               map: map
            });
           }
