@@ -2,30 +2,24 @@ body {
   font-family: 'Roboto', sans-serif !important;
   color: #333 !important;
 }
-
 header {
   display: flex !important;
   flex-direction: column-reverse;
   text-align: center;
 }
-
 .header-image, .landscape {
   width: 100%;
   height: auto;
 }
-
 .landscape-tall {
   display: none;
 }
-
 .headline {
   padding: 50px 0;
 }
-
 .headline h1 {
   padding-bottom: 20px;
 }
-
 .headline-link {
   text-decoration: none;
   color: inherit;
@@ -35,51 +29,49 @@ header {
   border-radius: 15px;
   transition: .3s;
 }
-
 .headline-link:hover {
   text-decoration: none;
   color: white;
   border: 2px solid #333;
   background-color: #333;
 }
-
 .headline-arrow {
   padding-left: 10px;
 }
-
+.tablet-br {
+  display: none;
+}
 .skills {
   width: 100%;
   display: flex;
   justify-content: space-around;
   align-items: center;
 }
-
 .skill {
   font-size: 6.4rem;
 }
-
 .projects {
   display: flex;
   width: 100%;
   flex-wrap: wrap;
   border-bottom: 1px solid #E8E8E8;
 }
-
 .project {
   display: flex;
   align-items: center;
   border-top: 1px solid #E8E8E8;
 }
-
 .project-description {
   width: 50%;
   padding: 30px;
 }
-
+.project-description h3 {
+  font-size: 1.3rem;
+}
 .project-description p {
   padding: 10px 0;
+  font-size: .8rem;
 }
-
 .project-description a {
   text-decoration: none;
   color: inherit;
@@ -87,83 +79,97 @@ header {
   padding: 5px 10px;
   border-radius: 15px;
   transition: .3s;
+  font-size: .8rem;
 }
-
 .project-description a:hover {
   text-decoration: none;
   color: white;
   background-color: #333;
   border: 2px solid #333;
 }
-
 .project-image {
   width: 50%;
 }
-
 .project-image img {
   width: 100%;
   height: auto;
 }
-
 footer {
   background-color: #333;
+  color: white;
+  display: flex !important;
+  width: 100%;
+  align-items: center;
 }
-
 .social {
   display: flex;
   justify-content: space-around;
   width: 40%;
   padding: 20px 0;
 }
-
 .social-link a {
   text-decoration: none;
   font-size: 32px;
   color: white;
   transition: .3s;
 }
-
 .social-link a:hover {
   text-decoration: none;
   color: white;
 }
+.copyright {
+  width: 40%;
+  text-align: center;
+  padding: 20px 0;
+}
 
+/* Tablet */
 @media (min-width: 768px) {
   header {
     flex-direction: row;
     height: 100vh;
     align-items: center;
   }
-
   .headline {
     width: 50%;
   }
-
   .header-image {
     width: 50%;
   }
-
+  .tablet-br {
+    display: block;
+  }
   .landscape {
     display: none;
   }
-
   .landscape-tall {
     display: inline-block;
     height: 100vh;
     width: 100%;
   }
+  .project-description h3 {
+    font-size: 1.3rem;
+  }
+  .project-description p {
+    font-size: .8rem;
+  }
+  .project-description a {
+    font-size: .8rem;
+  }
 }
 
+/* Desktop */
 @media (min-width: 980px) {
+  .tablet-br {
+    display: none;
+  }
   .project-image {
     width: 40%;
   }
-
   .project-description {
     width: 60%;
     padding: 20px 50px;
   }
-
   .social {
     width: 30%;
   }
