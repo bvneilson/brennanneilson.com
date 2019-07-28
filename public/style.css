@@ -25,6 +25,7 @@ header {
 }
 .headline h1 {
   padding-bottom: 20px;
+  font-size: 2rem;
 }
 .headline-link {
   text-decoration: none;
@@ -137,6 +138,9 @@ footer {
   }
   .headline {
     width: 50%;
+  }
+  .headline h1 {
+    font-size: 3rem;
   }
   .header-image {
     width: 50%;
