@@ -105,14 +105,17 @@ footer {
   background-color: #333;
   color: white;
   display: flex !important;
+  flex-direction: column;
   width: 100%;
-  align-items: center;
 }
 .social {
   display: flex;
-  justify-content: space-around;
-  width: 40%;
-  padding: 20px 0;
+  justify-content: center;
+  width: 100%;
+  padding: 20px 0 10px 0;
+}
+.social-link {
+  padding: 0 20px;
 }
 .social-link a {
   text-decoration: none;
@@ -124,9 +127,10 @@ footer {
   text-decoration: none;
   color: white;
 }
-.copyright {
-  width: 60%;
-  padding: 20px 0 20px 15%;
+#copyright {
+  width: 100%;
+  text-align: center;
+  padding-bottom: 5px;
 }
 
 /* Tablet */
@@ -181,7 +185,7 @@ footer {
     padding: 20px 50px;
   }
   .social {
-    width: 30%;
+    width: 100%;
   }
   .project-description h3 {
     font-size: 1.6rem;

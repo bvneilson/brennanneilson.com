@@ -129,9 +129,7 @@
         <a href="https://twitter.com/brennan_neilson" target="_blank"><ion-icon name="logo-twitter"></ion-icon></a>
       </div>
     </div>
-    <div class="copyright">
-      <p>&copy; 2019 Brennan Neilson</p>
-    </div>
+    <div id="copyright"></div>
   </footer>
 
   <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -140,6 +138,7 @@
   <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
   <script>
   $(document).ready(function() {
+    // Scroll to projects
     $('.headline-link').click(function(e) {
       e.preventDefault();
 
@@ -147,6 +146,10 @@
         scrollTop: $('.projects').offset().top
       }, 700);
     });
+    // Year for Copyright
+    var date = new Date();
+    var year = date.getFullYear();
+    document.getElementById("copyright").innerHTML = '<p>&copy; ' + year + ' Brennan Neilson</p>'
   });
   </script>
 </body>
