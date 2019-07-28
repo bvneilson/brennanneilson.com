@@ -10,14 +10,14 @@ header {
 }
 .header-image, .landscape {
   width: 100%;
-  height: 50vh;
+  height: 45vh;
 }
 .landscape-tall {
   display: none;
 }
 .headline {
   padding: 50px 0;
-  height: 50vh;
+  height: 45vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -51,11 +51,25 @@ header {
 .skills {
   width: 100%;
   display: flex;
-  justify-content: space-around;
+  flex-wrap: wrap;
+  justify-content: center;
   align-items: center;
+  padding: 40px 0;
+}
+.skills-header {
+  width: 100%;
+  text-align: center;
+  padding-bottom: 20px;
 }
 .skill {
-  font-size: 6.4rem;
+  text-align: center;
+  width: 20%;
+  margin: 10px 2.5%;
+  padding-top: 16px;
+  border: 1px solid #E8E8E8;
+}
+.skill ion-icon {
+  font-size: 2.4rem;
 }
 .projects {
   display: flex;
@@ -195,5 +209,9 @@ footer {
   }
   .project-description a {
     font-size: 1rem;
+  }
+  .skill {
+    width: 17%;
+    margin: 10px 1.5%;
   }
 }
