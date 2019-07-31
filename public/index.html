@@ -14,138 +14,229 @@
   <meta name="description" content="Brennan Neilson personal website homepage.">
   <meta name="keywords" content="HTML,CSS,Web Developer,JavaScript,Code,Development">
   <meta name="author" content="Brennan Neilson">
-  <meta name="viewport" content="width=900; user-scalable=0;">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Home | Brennan Neilson</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
 	<link rel="stylesheet" type="text/css" href="style.css">
-	<script src="https://use.fontawesome.com/3fa0e28532.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/css/materialize.min.css">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 	<link rel='shortcut icon' href='images/favicon.ico?' type='image/x-icon'/ >
 </head>
 <body>
-	<header>
-		<div class="navbar-fixed">
-			<nav>
-				<div class="nav-wrapper blue">
-					<a href="/" class="brand-logo">BN</a>
-					<ul id="nav-mobile" class="right">
-						<li class="active">
-							<a href="/">Home</a>
-						</li>
-						<li>
-							<a href="/portfolio">Portfolio</a>
-						</li>
-					</ul>
-				</div>
-			</nav>
-		</div>
-	</header>
-	<main>
-		<div class="container">
-			<div class="row" id="about">
-        <div class="col s4">
-          <img src="/images/BrennanNeilson2.JPG" class="profilePhoto responsive-img circle" style="max-width: 75%;">
-        </div>
-        <div class="col s8">
-          <p>Hello, I'm Brennan Neilson. I'm a Web Developer at Henry Schein One located in American Fork, Utah. I love to code and I'm always looking for great opportunities to grow my skills. To see some of my work, click <a href="/portfolio">here</a>!</p>
-        </div>
-			</div>
-      <div class="row" id="skills">
-        <h3>Skills</h3>
-        <div class="col s2"><img src="images/HTML5_Logo.jpg" alt="HTML 5"></div>
-        <div class="col s2"><img src="images/CSS3_Logo.jpg" alt="CSS 3"></div>
-        <div class="col s2"><img src="images/PHP_Logo.jpg" alt="PHP"></div>
-        <div class="col s2"><img src="images/AngularJS_Logo.jpg" alt="Angular JS"></div>
-        <div class="col s2"><img src="images/NodeJS_Logo.jpg" alt="Node JS"></div>
-        <div class="col s2"><img src="images/Javascript_Logo.jpg" alt="JavaScript"></div>
-        <div class="col s2"><img src="images/jQuery_Logo.jpg" alt="jQuery"></div>
-        <div class="col s2"><img src="images/MySQL_Logo.jpg" alt="MySQL"></div>
-        <div class="col s2"><img src="images/bootstrap.jpg" alt="Bootstrap"></div>
+
+  <header>
+    <div class="headline">
+      <h1>Hello, I'm <br class="tablet-br">Brennan Neilson.<br>I'm a full-stack <br class="tablet-br">web developer.</h1>
+      <a href="#" class="headline-link">View my work <ion-icon name="arrow-forward" class="headline-arrow"></ion-icon></a>
+    </div>
+    <div class="header-image">
+      <img src="images/landscape.jpg" alt="Landscape" class="landscape">
+      <img src="images/landscape-tall.jpg" alt="Landscape" class="landscape-tall">
+    </div>
+  </header>
+
+  <section class="about">
+    <div class="about-header">
+      <h2>About Me</h2>
+    </div>
+    <div class="about-image">
+      <img src="images/family.jpg" alt="My Family">
+    </div>
+    <div class="about-description">
+      <p>I live in Saratoga Springs, Utah with my beautiful wife Marissa and our dog Stanley. I enjoy grilling, golfing, and playing pickleball.</p>
+      <p>I love web development because I get a thrill out of solving problems and making ideas come to life.</p>
+    </div>
+  </section>
+
+  <section class="projects">
+    <div class="project-header">
+      <h2>Projects</h2>
+    </div>
+    <div class="project">
+      <div class="project-image">
+        <img src="images/canbrio.PNG" alt="Digital Marketing Site">
       </div>
-		  <div class="parallax-container" id="parallax-container">
-     		<div class="parallax"><img src="images/BrennanNeilson.jpg"></div>
-    	</div>
-      <h3>Contact Me</h3>
-      <div class="row">
-            <div class="col s4">
-              <div class="card-panel blue">
-                  <a href="tel:801-698-8732">
-                  <div class="white-text"><i class="fa fa-phone large" aria-hidden="true"></i>
-                  </div>
-                  <div class="white-text">(801) 698-8732
-                  </div>
-                  </a>
-              </div>
-            </div>
-            <div class="col s4">
-              <div class="card-panel blue">
-                  <a href="mailto:brennan@brennanneilson.com" target="_top">
-                  <div class="white-text"><i class="fa fa-envelope large" aria-hidden="true"></i>
-                  </div>
-                  <div class="white-text">brennan@brennanneilson.com
-                  </div>
-                  </a>
-              </div>
-            </div>
-            <div class="col s4">
-              <a href="https://www.linkedin.com/in/brennanneilson" target="_blank"">
-              <div class="card-panel blue">
-                  <div class="white-text"><i class="fa fa-linkedin-square large" aria-hidden="true"></i>
-                  </div>
-                  <div class="white-text">Brennan Neilson
-                  </div>
-              </div>
-              </a>
-            </div>
-        </div>
+      <div class="project-description">
+        <h3>Digital Marketing Site</h3>
+        <p>This is a site in progress. I am using HTML, CSS, JavaScript, Express, NodeJS, Firebase, and Stripe.</p>
+        <a href="http://www.canbrio.com/" target="_blank">Visit Site &raquo;</a>
+      </div>
     </div>
-    <div class="container">
-      <div id="map"></div>
+    <div class="project">
+      <div class="project-description">
+        <h3>My Wedding Site</h3>
+        <p>I built this site for my wedding in September 2017. I used HTML, CSS, JavaScript, jQuery, Express, NodeJS, and Firebase.</p>
+        <a href="http://www.brennanandmarissa.com/" target="_blank">Visit Site &raquo;</a>
+      </div>
+      <div class="project-image">
+        <img src="images/BrennanAndMarissa.png" alt="Wedding Site">
+      </div>
     </div>
-		</div>
-	</main>
-	<footer class="page-footer white">
+    <div class="project">
+      <div class="project-image">
+        <img src="images/FeastSearch.png" alt="Feast Search">
+      </div>
+      <div class="project-description">
+        <h3>Feast Search</h3>
+        <p>This is an app that finds local restaurants based on the location you enter. I used HTML, CSS, JavaScript (Angular), Express, NodeJS, and the Google Places API.</p>
+        <a href="http://www.feastsearch.com/" target="_blank">Visit Site &raquo;</a>
+      </div>
+    </div>
+    <div class="project">
+      <div class="project-description">
+        <h3>Captive Insurance</h3>
+        <p>My brother and I edited a template to create this site for an insurance company. We used HTML and CSS.</p>
+        <a href="http://captiveinsuranceusa.com/" target="_blank">Visit Site &raquo;</a>
+      </div>
+      <div class="project-image">
+        <img src="images/CaptiveInsurance.png" alt="Captive Insurance">
+      </div>
+    </div>
+    <div class="project">
+      <div class="project-image">
+        <img src="images/PrestigeCustom.png" alt="Prestige Custom">
+      </div>
+      <div class="project-description">
+        <h3>Prestige Custom Home Building</h3>
+        <p>A WordPress site that I created for a custom home construction company.</p>
+        <a href="http://prestigecustom.com/" target="_blank">Visit Site &raquo;</a>
+      </div>
+    </div>
+    <div class="project">
+      <div class="project-description">
+        <h3>GAM Exterminating</h3>
+        <p>A WordPress site that I created for a pest control company.</p>
+        <a href="http://www.gamexterminating.com/" target="_blank">Visit Site &raquo;</a>
+      </div>
+      <div class="project-image">
+        <img src="images/GamExterminating.png" alt="Gam Exterminating">
+      </div>
+    </div>
+  </section>
+
+  <section class="skills">
+    <div class="skills-header">
+      <h2>My Skills</h2>
+    </div>
+    <div class="skill">
+      <ion-icon name="logo-html5"></ion-icon>
+      <p>HTML</p>
+    </div>
+    <div class="skill">
+      <ion-icon name="logo-css3"></ion-icon>
+      <p>CSS</p>
+    </div>
+    <div class="skill">
+      <ion-icon name="logo-javascript"></ion-icon>
+      <p>JavaScript</p>
+    </div>
+    <div class="skill">
+      <ion-icon name="logo-nodejs"></ion-icon>
+      <p>NodeJS</p>
+    </div>
+    <div class="skill">
+      <ion-icon name="code"></ion-icon>
+      <p>Express</p>
+    </div>
+    <div class="skill">
+      <ion-icon name="code"></ion-icon>
+      <p>PHP</p>
+    </div>
+    <div class="skill">
+      <ion-icon name="code"></ion-icon>
+      <p>Angular</p>
+    </div>
+    <div class="skill">
+      <ion-icon name="code"></ion-icon>
+      <p>jQuery</p>
+    </div>
+    <div class="skill">
+      <ion-icon name="code"></ion-icon>
+      <p>MySQL</p>
+    </div>
+    <div class="skill">
+      <ion-icon name="code"></ion-icon>
+      <p>Git</p>
+    </div>
+    <div class="skill">
+      <ion-icon name="code"></ion-icon>
+      <p>HTTP</p>
+    </div>
+    <div class="skill">
+      <ion-icon name="code"></ion-icon>
+      <p>Firebase</p>
+    </div>
+    <div class="skill">
+      <ion-icon name="code"></ion-icon>
+      <p>Heroku</p>
+    </div>
+    <div class="skill">
+      <ion-icon name="code"></ion-icon>
+      <p>WordPress</p>
+    </div>
+    <div class="skills-header">
+      <h2>Coming Soon</h2>
+    </div>
+    <div class="skill">
+      <ion-icon name="code"></ion-icon>
+      <p>React</p>
+    </div>
+    <div class="skill">
+      <ion-icon name="logo-python"></ion-icon>
+      <p>Python</p>
+    </div>
+    <div class="skill">
+      <ion-icon name="code"></ion-icon>
+      <p>SQL</p>
+    </div>
+    <div class="skill">
+      <ion-icon name="code"></ion-icon>
+      <p>Redux</p>
+    </div>
+    <div class="skill">
+      <ion-icon name="code"></ion-icon>
+      <p>Ajax</p>
+    </div>
+  </section>
+
+  <footer>
     <div class="social">
-      <h5 class="blue-text">Social</h5>
-      <ul>
-        <li><a href="https://www.linkedin.com/in/brennanneilson" target="_blank"><i class="fa fa-linkedin"></i></a></li>
-    		<li><a href="https://facebook.com/bvneilson" target="_blank"><i class="fa fa-facebook"></i></a></li>
-    		<li><a href="https://twitter.com/brennan_neilson" target="_blank"><i class="fa fa-twitter"></i></a></li>
-    		<li><a href="https://plus.google.com/+BrennanNeilson" target="_blank"><i class="fa fa-google-plus"></i> </a></li>
-			</ul>
-    </div>
-    <div class="footer-copyright blue">
-      <div class="createdBy">
-        Created by Brennan Neilson
+      <div class="social-link">
+        <a href="https://github.com/bvneilson" target="_blank"><ion-icon name="logo-github"></ion-icon></a>
+      </div>
+      <div class="social-link">
+        <a href="https://www.linkedin.com/in/brennanneilson/" target="_blank"><ion-icon name="logo-linkedin"></ion-icon></a>
+      </div>
+      <div class="social-link">
+        <a href="https://facebook.com/bvneilson" target="_blank"><ion-icon name="logo-facebook"></ion-icon></a>
+      </div>
+      <div class="social-link">
+        <a href="https://twitter.com/brennan_neilson" target="_blank"><ion-icon name="logo-twitter"></ion-icon></a>
       </div>
     </div>
+    <div id="copyright"></div>
   </footer>
 
-	<script   src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 	<!-- Compiled and minified JavaScript -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
-	<script>
-	  $(document).ready(function(){
-      $('.parallax').parallax();
-    });
-	</script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
   <script>
+  $(document).ready(function() {
+    // Scroll to projects
+    $('.headline-link').click(function(e) {
+      e.preventDefault();
 
-        function initMap() {
-          var saratoga = {lat: 40.3302, lng: -111.9045};
-          var map = new google.maps.Map(document.getElementById('map'), {
-              zoom: 10,
-              center: saratoga
-           });
-          var marker = new google.maps.Marker({
-              position: saratoga,
-              map: map
-           });
-          }
-
-      </script>
-    <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQhkRB1FaKLIX6Sm1BE_OEJ0TuFkvqRdo&callback=initMap">
-    </script>
+      $('html, body').animate({
+        scrollTop: $('.projects').offset().top
+      }, 700);
+    });
+    // Year for Copyright
+    var date = new Date();
+    var year = date.getFullYear();
+    document.getElementById("copyright").innerHTML = '<p>&copy; ' + year + ' Brennan Neilson</p>'
+  });
+  </script>
 </body>
 </html>
