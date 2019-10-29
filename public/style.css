@@ -45,6 +45,9 @@ header {
 .headline-arrow {
   padding-left: 10px;
 }
+.resume-link:hover {
+  text-decoration: none;
+}
 .tablet-br {
   display: none;
 }
