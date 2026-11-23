@@ -8,8 +8,8 @@ export const SOURCE_REPO_URL = "https://github.com/bvneilson/brennanneilson.com"
 /** The address in two parts. The page joins them in the browser, so the HTML never holds it. */
 export const EMAIL_PARTS = { user: "bvneilson", domain: "gmail.com" } as const;
 
-/** The open-sourced COO piece. Stays null until its public repo exists, and the band hides until then. */
-export const OPEN_SOURCE_REPO: string | null = null;
+/** The open-sourced agent-reaper package (GitHub release only, not on npm). The band hides if this is null. */
+export const OPEN_SOURCE_REPO: string | null = "https://github.com/bvneilson/agent-reaper";
 
 /**
  * The COO case study page. The home teaser links to it only while this is set: the site walk fails

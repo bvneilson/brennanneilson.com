@@ -5,6 +5,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { HomePage } from '../src/components/home-page.tsx';
 import { OpenSourceBand } from '../src/components/open-source-band.tsx';
 import { VerifiedPage } from '../src/components/verified-page.tsx';
+import { copy } from '../src/content/copy.ts';
+import { OPEN_SOURCE_REPO } from '../src/content/site.ts';
 import { projects } from '../src/content/projects.ts';
 import { resume as RESUME } from '../src/content/resume-source.ts';
 import { SITE_CLAIM, SITE_SLUG } from '../src/content/site-claim.ts';
@@ -188,6 +190,21 @@ describe('open-source band', () => {
   it('links the repo once it is set', () => {
     render(<OpenSourceBand repo="https://github.com/bvneilson/example" />);
     expect(screen.getByRole('link', { name: /GitHub/ }).getAttribute('href')).toBe('https://github.com/bvneilson/example');
+  });
+
+  it('points at the released agent-reaper repo', () => {
+    expect(OPEN_SOURCE_REPO).toBe('https://github.com/bvneilson/agent-reaper');
+    render(<OpenSourceBand repo={OPEN_SOURCE_REPO} />);
+    expect(screen.getByRole('link', { name: /GitHub/ }).getAttribute('href')).toBe('https://github.com/bvneilson/agent-reaper');
+  });
+
+  it('copy says only what the release proves', () => {
+    const { body } = copy.openSource;
+    expect(body).toMatch(/MIT/);
+    expect(body).toMatch(/headless agent processes/);
+    expect(body).toMatch(/whole process tree on timeout/);
+    expect(body).not.toMatch(/npm/i);
+    expect(body).not.toMatch(/[—;]/);
   });
 });
 

@@ -1,6 +1,7 @@
 import type { Page } from '@playwright/test';
 import { PDFDocument } from 'pdf-lib';
 import { expect, SITE_URL, test } from './fixtures.ts';
+import { OPEN_SOURCE_REPO } from '../src/content/site.ts';
 
 // The self-walk, one test per clause of SITE_CLAIM: every link works, the resume PDF downloads,
 // and nothing errors. "Nothing errors" is the guard in fixtures.ts, which fails a walk on any
@@ -78,6 +79,7 @@ test.describe('site', () => {
 
   test('every outbound link resolves', async ({ page }) => {
     const { outbound } = await crawl(page);
+    if (OPEN_SOURCE_REPO) expect(outbound, 'the open-source link is rendered and walked').toContain(OPEN_SOURCE_REPO);
     for (const link of outbound) {
       const u = new URL(link);
       if (BOT_BLOCKING_HOSTS.includes(u.hostname)) {

@@ -76,8 +76,8 @@ describe('/coo', () => {
     expect(hrefs).toContain('/verified');
   });
 
-  // OPEN_SOURCE_REPO is null, so the stories tell the incidents without a repo link (spec §7.5).
-  it('links only pages that exist, and no open-source repo while there is none', () => {
+  // The stories tell the incidents without a repo link (spec §7.5). The open-source link lives on the home page.
+  it('links only pages that exist, and no open-source repo link', () => {
     render(<CooPage stats={stats(stat('fresh', 1, ago(0)))} now={NOW} />);
     for (const a of screen.getAllByRole('link')) {
       expect(['/', '/verified', '/resume']).toContain((a.getAttribute('href') ?? '').split('#')[0]);
