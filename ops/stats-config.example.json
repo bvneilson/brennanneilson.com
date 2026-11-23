@@ -1,0 +1,12 @@
+[
+  {
+    "metric": "coo_repo_prs_merged",
+    "label": "pull requests merged into my COO's codebase since June 17, 2026",
+    "query": "repo:<owner>/<coo repo> is:pr is:merged"
+  },
+  {
+    "metric": "prs_merged_last_7d",
+    "label": "pull requests merged across my projects in the last 7 days",
+    "query": "user:<owner> is:pr is:merged merged:>={{since7d}}"
+  }
+]
