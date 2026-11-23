@@ -60,7 +60,7 @@ for (const c of cases) {
     it('returns the parsed object for a valid body, fetching the right URL fresh (no-store)', async () => {
       const f = asFetch(async () => okJson(c.good));
       expect(await c.run(f)).toEqual(c.good);
-      expect(f).toHaveBeenCalledWith(c.url, { cache: 'no-store' });
+      expect(f).toHaveBeenCalledWith(c.url, { cache: 'no-store', signal: expect.any(AbortSignal) });
     });
     it('returns null on 404', async () => {
       expect(await c.run(asFetch(async () => new Response('nope', { status: 404 })))).toBeNull();
@@ -71,6 +71,16 @@ for (const c of cases) {
       });
       expect(await c.run(f)).toBeNull();
     });
+    it('passes an abort signal and returns null when the origin never answers', async () => {
+      const f = asFetch(
+        (_url, init) =>
+          new Promise<Response>((_res, rej) => {
+            init?.signal?.addEventListener('abort', () => rej(new Error('aborted')));
+          }),
+      );
+      expect(await c.run(f)).toBeNull();
+      expect(f).toHaveBeenCalledWith(c.url, { cache: 'no-store', signal: expect.any(AbortSignal) });
+    }, 8000);
     it('returns null on non-JSON', async () => {
       expect(await c.run(asFetch(async () => new Response('<html>', { status: 200 })))).toBeNull();
     });
