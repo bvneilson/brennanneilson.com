@@ -33,16 +33,21 @@ describe('parseConfig', () => {
 })
 
 describe('{{since7d}}', () => {
-  it('crosses a month boundary', () => {
-    expect(since7d(new Date('2026-12-03T10:00:00Z'))).toBe('2026-11-26')
-    expect(since7d(new Date('2026-03-05T00:30:00Z'))).toBe('2026-02-26')
-    expect(substituteQuery('merged:>={{since7d}}', new Date('2027-01-02T00:00:00Z'))).toBe('merged:>=2026-12-26')
+  it('is exactly now minus 7 x 24h, as an ISO datetime', () => {
+    expect(since7d(new Date('2026-11-23T12:34:56.789Z'))).toBe('2026-11-16T12:34:56Z')
+    const now = new Date('2026-11-23T12:00:00Z')
+    expect(Date.parse(since7d(now))).toBe(now.getTime() - 7 * 24 * 60 * 60 * 1000)
+  })
+  it('crosses month and year boundaries', () => {
+    expect(since7d(new Date('2026-12-03T10:00:00Z'))).toBe('2026-11-26T10:00:00Z')
+    expect(since7d(new Date('2026-03-05T00:30:00Z'))).toBe('2026-02-26T00:30:00Z')
+    expect(substituteQuery('merged:>={{since7d}}', new Date('2027-01-02T00:00:00Z'))).toBe('merged:>=2026-12-26T00:00:00Z')
   })
 })
 
 describe('collectCounts failure behavior', () => {
   it('returns counts when every query succeeds', () => {
-    const out = collectCounts(CFG, (q) => (q.includes('2026-11-16') ? 7 : 1059), NOW)
+    const out = collectCounts(CFG, (q) => (q.includes('2026-11-16T12:00:00Z') ? 7 : 1059), NOW)
     expect(out.map((c) => c.value)).toEqual([1059, 7])
   })
   it('throws (publishes nothing) if any query fails, naming the metric but not the query', () => {

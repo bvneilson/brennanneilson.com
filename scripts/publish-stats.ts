@@ -35,9 +35,9 @@ export function parseConfig(text: string): MetricConfig[] {
   })
 }
 
-/** UTC date, YYYY-MM-DD, seven days before `now`. */
+/** ISO datetime (UTC, whole seconds), exactly 7 x 24h before `now`. */
 export function since7d(now: Date): string {
-  return new Date(now.getTime() - 7 * DAY_MS).toISOString().slice(0, 10)
+  return new Date(now.getTime() - 7 * DAY_MS).toISOString().replace(/\.\d{3}Z$/, 'Z')
 }
 
 export function substituteQuery(query: string, now: Date): string {
