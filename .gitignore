@@ -1,0 +1,9 @@
+node_modules/
+.next/
+.vercel/
+.env*
+truth/out/
+test-results/
+playwright-report/
+.superpowers/
+.DS_Store
