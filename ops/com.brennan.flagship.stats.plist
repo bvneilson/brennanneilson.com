@@ -6,8 +6,8 @@
   <string>com.brennan.flagship.stats</string>
   <key>ProgramArguments</key>
   <array>
-    <string>/Users/brennanneilson/.nvm/versions/node/v24.18.0/bin/node</string>
-    <string>/Users/brennanneilson/worktrees/flagship-site/scripts/publish-stats.ts</string>
+    <string>/bin/bash</string>
+    <string>/Users/brennanneilson/flagship-runner/ops/flagship-runner.sh</string>
   </array>
   <key>EnvironmentVariables</key>
   <dict>
