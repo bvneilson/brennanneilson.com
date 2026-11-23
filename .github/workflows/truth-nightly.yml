@@ -63,7 +63,7 @@ jobs:
           gh label create truth-failure --color B60205 --description 'A claim-walk or review check is failing' 2>/dev/null || true
           open_issue() { # title -> number or empty
             gh issue list --label truth-failure --state open --limit 200 --json number,title \
-              | jq -r --arg t "$1" '.[] | select(.title == $t) | .number' | head -n1
+              | jq -r --arg t "$1" '.[] | select(.title == $t) | .number' | head -n 1
           }
           jq -r '.results[] | [.slug, .status] | @tsv' truth/out/results.json | while IFS=$'\t' read -r slug status; do
             title="Truth walk failing: ${slug}"
@@ -89,7 +89,7 @@ jobs:
           echo "resume freshness: ${state}"
           title='Resume review due'
           num="$(gh issue list --label truth-failure --state open --limit 200 --json number,title \
-            | jq -r --arg t "$title" '.[] | select(.title == $t) | .number' | head -n1)"
+            | jq -r --arg t "$title" '.[] | select(.title == $t) | .number' | head -n 1)"
           case "$state" in
             review-due|hidden)
               if [ -z "$num" ]; then
