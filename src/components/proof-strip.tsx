@@ -22,16 +22,7 @@ export function ProofStrip({ stats, projects, now }: { stats: Stat[]; projects: 
       <ul className="grid gap-x-10 gap-y-2 md:grid-cols-3">
         {stats.map((s, i) => (
           <li key={s.metric} className="rise" style={{ animationDelay: `${120 + i * 90}ms` }}>
-            <div data-tile tabIndex={0} className="tile">
-              <p className="tile-value">{formatCount(s.value)}</p>
-              <p className="tile-label">{s.label}</p>
-              <p className="tile-meta">
-                {copy.proof.updated} <RelativeTime iso={s.asOf} initial={timeAgo(s.asOf, now)} />
-              </p>
-              <p className="tile-reveal">
-                {copy.proof.source} {s.source} · <time dateTime={s.asOf}>{utcStamp(s.asOf)}</time>
-              </p>
-            </div>
+            <StatTile stat={s} now={now} />
           </li>
         ))}
         {lastRun && (
@@ -57,5 +48,24 @@ export function ProofStrip({ stats, projects, now }: { stats: Stat[]; projects: 
         )}
       </ul>
     </section>
+  );
+}
+
+/**
+ * One live number: its value, its label from the data, how fresh it is, and (on hover, focus or a
+ * touch screen) its source and exact time. Callers pass only stats that `visibleStats` kept.
+ */
+export function StatTile({ stat, now }: { stat: Stat; now: Date }) {
+  return (
+    <div data-tile tabIndex={0} className="tile">
+      <p className="tile-value">{formatCount(stat.value)}</p>
+      <p className="tile-label">{stat.label}</p>
+      <p className="tile-meta">
+        {copy.proof.updated} <RelativeTime iso={stat.asOf} initial={timeAgo(stat.asOf, now)} />
+      </p>
+      <p className="tile-reveal">
+        {copy.proof.source} {stat.source} · <time dateTime={stat.asOf}>{utcStamp(stat.asOf)}</time>
+      </p>
+    </div>
   );
 }

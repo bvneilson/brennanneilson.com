@@ -3,6 +3,7 @@
 
 const COUNT = new Intl.NumberFormat('en-US');
 const DAY = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
+const LONG_DAY = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
 const STAMP = new Intl.DateTimeFormat('en-US', {
   month: 'short',
   day: 'numeric',
@@ -27,6 +28,12 @@ const valid = (iso: string): Date | null => {
 export function shortDate(iso: string): string {
   const d = valid(iso);
   return d ? DAY.format(d) : '';
+}
+
+/** "Nov 23, 2026" */
+export function longDate(iso: string): string {
+  const d = valid(iso);
+  return d ? LONG_DAY.format(d) : '';
 }
 
 /** "Nov 23, 2026, 13:29 UTC" */

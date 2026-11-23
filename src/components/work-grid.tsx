@@ -1,8 +1,8 @@
 import Link from 'next/link';
-import type { ReactNode } from 'react';
 import { copy } from '../content/copy.ts';
 import type { VisibleProject } from '../content/types.ts';
 import { ArrowRightIcon } from './icons.tsx';
+import { Notice } from './notice.tsx';
 import { ProjectCard } from './project-card.tsx';
 
 /**
@@ -47,14 +47,5 @@ export function WorkGrid({ projects, available }: { projects: VisibleProject[]; 
         </ul>
       )}
     </section>
-  );
-}
-
-function Notice({ children }: { children: ReactNode }) {
-  return (
-    <p className="mt-12 flex items-start gap-3 rounded-lg border border-dashed border-rule px-5 py-5 text-ink-2 sm:mt-16 sm:px-6">
-      <span className="mt-[0.55em] size-2 shrink-0 rounded-full bg-muted" aria-hidden="true" />
-      <span>{children}</span>
-    </p>
   );
 }

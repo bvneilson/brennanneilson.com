@@ -6,6 +6,7 @@ import { HomePage } from '../src/components/home-page.tsx';
 import { OpenSourceBand } from '../src/components/open-source-band.tsx';
 import { VerifiedPage } from '../src/components/verified-page.tsx';
 import { projects } from '../src/content/projects.ts';
+import { resume as RESUME } from '../src/content/resume-source.ts';
 import { SITE_CLAIM, SITE_SLUG } from '../src/content/site-claim.ts';
 import type { ClaimResult, Stats, TruthResults } from '../src/content/types.ts';
 
@@ -65,13 +66,13 @@ afterEach(() => {
 
 describe('home', () => {
   it('with truth = null, the work section says verification is unavailable and shows zero cards', () => {
-    render(<HomePage truth={null} stats={stats()} now={NOW} />);
+    render(<HomePage resume={RESUME} truth={null} stats={stats()} now={NOW} />);
     expect(workSection().getByText(/Verification is temporarily unavailable/)).toBeTruthy();
     expect(cards()).toHaveLength(0);
   });
 
   it('shows one card per passing, fresh project, with its claim and a verified mark linking to its run', () => {
-    render(<HomePage truth={truth()} stats={stats()} now={NOW} />);
+    render(<HomePage resume={RESUME} truth={truth()} stats={stats()} now={NOW} />);
     expect(cards()).toHaveLength(projects.length);
     for (const p of projects) {
       const card = within(workSection().getByRole('article', { name: p.name }));
@@ -83,27 +84,27 @@ describe('home', () => {
   });
 
   it('a failing project renders no card', () => {
-    render(<HomePage truth={truth({ 'draw-night': { status: 'fail' } })} stats={stats()} now={NOW} />);
+    render(<HomePage resume={RESUME} truth={truth({ 'draw-night': { status: 'fail' } })} stats={stats()} now={NOW} />);
     expect(workSection().queryByRole('article', { name: 'Draw Night' })).toBeNull();
     expect(cards()).toHaveLength(projects.length - 1);
   });
 
   it('when nothing has a fresh pass, the work section says so and points to /verified', () => {
     const allFail = Object.fromEntries(projects.map((p) => [p.slug, { status: 'fail' as const }]));
-    render(<HomePage truth={truth(allFail)} stats={stats()} now={NOW} />);
+    render(<HomePage resume={RESUME} truth={truth(allFail)} stats={stats()} now={NOW} />);
     expect(cards()).toHaveLength(0);
     expect(workSection().getByRole('link', { name: /verified page/ }).getAttribute('href')).toBe('/verified');
   });
 
   it('a stale stat renders no tile, a fresh one does', () => {
-    render(<HomePage truth={truth()} stats={stats()} now={NOW} />);
+    render(<HomePage resume={RESUME} truth={truth()} stats={stats()} now={NOW} />);
     expect(screen.queryByText(STALE_STAT.label)).toBeNull();
     expect(screen.getByText(FRESH_STAT.label)).toBeTruthy();
     expect(screen.getByText('1,059')).toBeTruthy();
   });
 
   it('each stat tile takes keyboard focus and carries its source and as-of time', () => {
-    render(<HomePage truth={truth()} stats={stats()} now={NOW} />);
+    render(<HomePage resume={RESUME} truth={truth()} stats={stats()} now={NOW} />);
     const tile = screen.getByText(FRESH_STAT.label).closest('[data-tile]') as HTMLElement;
     expect(tile.tabIndex).toBe(0);
     expect(within(tile).getByText(/GitHub search API/)).toBeTruthy();
@@ -112,7 +113,7 @@ describe('home', () => {
   });
 
   it('the products tile counts visible projects and says when the last run was', () => {
-    render(<HomePage truth={truth({ 'golf-toolbox': { status: 'fail' } })} stats={stats()} now={NOW} />);
+    render(<HomePage resume={RESUME} truth={truth({ 'golf-toolbox': { status: 'fail' } })} stats={stats()} now={NOW} />);
     const tile = screen.getByText(/products, verified nightly/).closest('[data-tile]') as HTMLElement;
     expect(within(tile).getByText(String(projects.length - 1))).toBeTruthy();
     expect(within(tile).getByText('3 hours ago')).toBeTruthy();
@@ -125,26 +126,26 @@ describe('home', () => {
     for (const r of t.results) if (r.slug !== 'draw-night') r.finishedAt = '2026-11-23T14:00:00.000Z';
     const later = new Date('2026-11-23T21:30:00.000Z');
     vi.setSystemTime(later); // the browser-side recompute reads this clock
-    render(<HomePage truth={t} stats={stats()} now={later} />);
+    render(<HomePage resume={RESUME} truth={t} stats={stats()} now={later} />);
     const tile = screen.getByText(/products, verified nightly/).closest('[data-tile]') as HTMLElement;
     expect(within(tile).getByText('1 hour ago')).toBeTruthy();
   });
 
   it('the products tile hides when no project is visible', () => {
-    render(<HomePage truth={null} stats={stats()} now={NOW} />);
+    render(<HomePage resume={RESUME} truth={null} stats={stats()} now={NOW} />);
     expect(screen.queryByText(/verified nightly/)).toBeNull();
   });
 
   it('builds the email link in the browser, so the server HTML never holds the address', () => {
-    const html = renderToStaticMarkup(<HomePage truth={truth()} stats={stats()} now={NOW} />);
+    const html = renderToStaticMarkup(<HomePage resume={RESUME} truth={truth()} stats={stats()} now={NOW} />);
     expect(html).not.toContain('mailto:');
     expect(html).not.toMatch(/bvneilson@/);
-    render(<HomePage truth={truth()} stats={stats()} now={NOW} />);
+    render(<HomePage resume={RESUME} truth={truth()} stats={stats()} now={NOW} />);
     expect(screen.getByRole('link', { name: /^Email/ }).getAttribute('href')).toBe('mailto:bvneilson@gmail.com');
   });
 
   it('links GitHub, LinkedIn, and Brennan Builds from contact', () => {
-    render(<HomePage truth={truth()} stats={stats()} now={NOW} />);
+    render(<HomePage resume={RESUME} truth={truth()} stats={stats()} now={NOW} />);
     const contact = within(document.getElementById('contact') as HTMLElement);
     expect(contact.getByRole('link', { name: /^GitHub/ }).getAttribute('href')).toBe('https://github.com/bvneilson');
     expect(contact.getByRole('link', { name: /^LinkedIn/ }).getAttribute('href')).toBe(
@@ -153,13 +154,28 @@ describe('home', () => {
     expect(contact.getByRole('link', { name: /Work with me/ }).getAttribute('href')).toBe('https://brennanbuilds.dev');
   });
 
-  it('never links to a page that does not exist yet', () => {
-    render(<HomePage truth={truth()} stats={stats()} now={NOW} />);
+  it('links only internal pages and files that exist', () => {
+    render(<HomePage resume={RESUME} truth={truth()} stats={stats()} now={NOW} />);
     const internal = screen
       .getAllByRole('link')
       .map((a) => a.getAttribute('href') ?? '')
       .filter((h) => h.startsWith('/'));
-    for (const href of internal) expect(['/', '/verified']).toContain(href.split('#')[0]);
+    for (const href of internal) {
+      expect(['/', '/verified', '/coo', '/resume', '/resume.pdf']).toContain(href.split('#')[0]);
+    }
+  });
+
+  it('links the COO case study from the teaser', () => {
+    render(<HomePage resume={RESUME} truth={truth()} stats={stats()} now={NOW} />);
+    const teaser = within(document.getElementById('coo') as HTMLElement);
+    expect(teaser.getByRole('link', { name: /case study/ }).getAttribute('href')).toBe('/coo');
+  });
+
+  it('shows the experience section between the work and contact sections', () => {
+    render(<HomePage resume={RESUME} truth={truth()} stats={stats()} now={NOW} />);
+    const ids = [...document.querySelectorAll('main section[id]')].map((s) => s.id);
+    expect(ids.indexOf('experience')).toBeGreaterThan(ids.indexOf('work'));
+    expect(ids.indexOf('experience')).toBe(ids.indexOf('contact') - 1);
   });
 });
 
@@ -221,8 +237,8 @@ describe('/verified', () => {
 
 describe('copy', () => {
   const pages = [
-    ['home, full data', <HomePage key="a" truth={truth()} stats={stats()} now={NOW} />],
-    ['home, no data', <HomePage key="b" truth={null} stats={null} now={NOW} />],
+    ['home, full data', <HomePage resume={RESUME} key="a" truth={truth()} stats={stats()} now={NOW} />],
+    ['home, no data', <HomePage resume={RESUME} key="b" truth={null} stats={null} now={NOW} />],
     ['/verified, full data', <VerifiedPage key="c" truth={truth({ 'draw-night': { status: 'fail' } })} now={NOW} />],
     ['/verified, no data', <VerifiedPage key="d" truth={null} now={NOW} />],
   ] as const;

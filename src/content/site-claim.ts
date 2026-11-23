@@ -3,5 +3,5 @@
 
 /** The self-walk's slug. It is not a Project, so it is appended to every result set. */
 export const SITE_SLUG = 'site';
-// Only what site.spec proves today (R15). Task 9 adds the resume PDF clause with its assertion.
-export const SITE_CLAIM = 'This site: every link works and nothing errors.';
+// Only what truth/site.spec.ts proves (R15): each clause has its own walk there.
+export const SITE_CLAIM = 'This site: every link works, the resume PDF downloads, and nothing errors.';

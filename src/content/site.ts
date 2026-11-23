@@ -12,7 +12,12 @@ export const EMAIL_PARTS = { user: "bvneilson", domain: "gmail.com" } as const;
 export const OPEN_SOURCE_REPO: string | null = null;
 
 /**
- * The COO case study page. Stays null until that page exists: the site walk fails on any dead
- * internal link, so the home teaser links to it only once it ships.
+ * The COO case study page. The home teaser links to it only while this is set: the site walk fails
+ * on any dead internal link.
  */
-export const COO_CASE_STUDY_PATH: string | null = null;
+export const COO_CASE_STUDY_PATH: string | null = "/coo";
+
+export const RESUME_PATH = "/resume";
+/** Printed from /resume by scripts/resume-pdf.ts. A plain <a>, never next/link, which would prefetch it. */
+export const RESUME_PDF_PATH = "/resume.pdf";
+export const RESUME_PDF_FILENAME = "Brennan-Neilson-Resume.pdf";

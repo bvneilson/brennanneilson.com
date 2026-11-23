@@ -163,8 +163,8 @@ describe('toTruthResults', () => {
       finishedAt: NOW.toISOString(),
       runUrl: RUN,
     });
-    // R15: only what site.spec proves today. Task 9 restores the resume PDF clause with its assertion.
-    expect(SITE_CLAIM).toBe('This site: every link works and nothing errors.');
+    // R15: only what site.spec proves. Its resume PDF clause came back with the /resume.pdf walk (R4).
+    expect(SITE_CLAIM).toBe('This site: every link works, the resume PDF downloads, and nothing errors.');
     const failed = toTruthResults(report(walk('site', spec('links', both('failed', 'failed')))), PROJECTS, RUN, NOW);
     expect(statusOf(failed, 'site')).toBe('fail');
   });

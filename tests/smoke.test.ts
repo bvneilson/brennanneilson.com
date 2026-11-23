@@ -16,6 +16,21 @@ test("/verified page module exports a component and renders per request", async 
   expect(mod.revalidate).toBeUndefined();
 });
 
+test("/coo page module exports a component and renders per request", async () => {
+  const mod = (await import("../src/app/coo/page.tsx")) as Record<string, unknown>;
+  expect(typeof mod.default).toBe("function");
+  expect(mod.dynamic).toBe("force-dynamic");
+  expect(mod.revalidate).toBeUndefined();
+});
+
+// Per request too: the resume hides itself 120 days after its last review, with no rebuild.
+test("/resume page module exports a component and renders per request", async () => {
+  const mod = (await import("../src/app/resume/page.tsx")) as Record<string, unknown>;
+  expect(typeof mod.default).toBe("function");
+  expect(mod.dynamic).toBe("force-dynamic");
+  expect(mod.revalidate).toBeUndefined();
+});
+
 // R29: pages and their imports stay pure. truth/ holds the walk CLI, which pulls node:fs.
 test("nothing under src/ imports truth/ or a node: builtin", async () => {
   const { readdirSync, readFileSync } = await import("node:fs");

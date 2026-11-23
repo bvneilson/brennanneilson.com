@@ -6,7 +6,7 @@ import { ArrowRightIcon, ArrowUpRightIcon } from './icons.tsx';
 export function SiteFooter({ year }: { year: number }) {
   const { footer } = copy;
   return (
-    <footer className="wrap mt-28 sm:mt-36">
+    <footer className="wrap mt-28 sm:mt-36 print:hidden">
       <div className="flex flex-col gap-5 border-t border-rule py-8 text-sm sm:flex-row sm:items-end sm:justify-between sm:gap-10">
         <div className="space-y-2">
           <p className="font-mono text-xs text-muted">

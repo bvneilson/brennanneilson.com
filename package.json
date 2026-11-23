@@ -14,7 +14,7 @@
     "typecheck": "tsc --noEmit",
     "walk": "playwright test",
     "privacy": "node scripts/privacy-scan.ts",
-    "resume:pdf": "node scripts/build-resume-pdf.ts"
+    "resume:pdf": "node scripts/resume-pdf.ts"
   },
   "dependencies": {
     "next": "^16.4.6",

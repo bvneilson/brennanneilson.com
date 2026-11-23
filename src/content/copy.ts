@@ -1,5 +1,6 @@
-// Every word of first-person copy on the home and /verified pages. Keep it here, and keep it plain
-// data (strings only), so `node scripts/copy-text.ts` can hand all of it to the voice gate.
+// Every word of first-person copy on the home, /resume and /verified pages. The /coo story lives in
+// coo.ts and the resume itself in resume.md. Keep it here, and keep it plain data (strings only), so
+// `node scripts/copy-text.ts` can hand all of it to the voice gate.
 // Project claims live in projects.ts and stat labels come from the live stats file.
 
 export const copy = {
@@ -12,6 +13,8 @@ export const copy = {
     skip: 'Skip to content',
     label: 'Main',
     work: 'Work',
+    coo: 'COO',
+    resume: 'Resume',
     verified: 'Verified',
     contact: 'Contact',
   },
@@ -60,6 +63,14 @@ export const copy = {
     body: "One piece of my COO lives in its own public repo. You're welcome to read the code and try it out!",
     link: 'View it on GitHub',
   },
+  experience: {
+    label: 'Experience',
+    heading: "Where I've worked",
+    body: "Here's the short version. The full resume has the details, and you can grab it as a PDF too!",
+    reviewed: 'From my resume, reviewed',
+    fullResume: 'Read the full resume',
+    pdf: 'Download the PDF',
+  },
   contact: {
     label: 'Contact',
     heading: "I'd really love to hear from you!",
@@ -75,6 +86,16 @@ export const copy = {
     source: "This site's code and its nightly tests are public on GitHub, so you can check my work too!",
     sourceLink: 'Read the source',
     verifiedLink: 'Latest results',
+  },
+  resume: {
+    title: 'Resume',
+    description: "Brennan Neilson's resume. AI and full-stack engineer in Utah with 10 years of shipping production web apps.",
+    label: 'Resume',
+    contactLabel: 'Contact details',
+    pdf: 'Download PDF',
+    pdfNote: 'The PDF is printed from this page, and a test fails if the two ever drift apart!',
+    reviewed: 'Reviewed',
+    refreshing: "My resume is being refreshed, and it'll be back here soon!",
   },
   verified: {
     title: 'Verified',

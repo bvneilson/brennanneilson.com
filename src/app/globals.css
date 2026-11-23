@@ -470,6 +470,343 @@
   .rise {
     animation: rise 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
   }
+
+  .button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 999px;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 0.625rem 1.125rem;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    transition: background 0.2s;
+  }
+  .button:hover {
+    background: color-mix(in oklab, var(--ink) 82%, var(--proof));
+  }
+
+  .chip {
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    background: var(--card);
+    padding: 0.3rem 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--ink-2);
+  }
+
+  /* Home: one row per role, dates on the right (under the role on a phone). */
+  .role-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 0.125rem;
+    border-bottom: 1px solid var(--rule);
+    padding-block: 1.125rem;
+  }
+  .role-org {
+    font-family: var(--font-serif);
+    font-size: 1.625rem;
+    line-height: 1.15;
+  }
+  .role-title {
+    color: var(--ink-2);
+  }
+  .role-when {
+    margin-top: 0.25rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+  @media (width >= 40rem) {
+    .role-row {
+      grid-template-columns: minmax(0, 1fr) auto;
+      column-gap: 1.5rem;
+    }
+    .role-when {
+      grid-column: 2;
+      grid-row: 1 / span 2;
+      align-self: center;
+      margin-top: 0;
+      text-align: right;
+      white-space: nowrap;
+    }
+  }
+
+  /* /resume. The print rules at the end of this file turn the same markup into the PDF. */
+  .resume {
+    padding-top: 3.5rem;
+  }
+  .resume-head {
+    display: grid;
+    gap: 2rem;
+    border-bottom: 1px solid var(--ink);
+    padding-bottom: 2.5rem;
+  }
+  .resume-name {
+    margin-top: 1.25rem;
+    font-family: var(--font-serif);
+    font-size: clamp(3.25rem, 8vw, 6.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+  }
+  .resume-headline {
+    margin-top: 1rem;
+    font-size: 1.25rem;
+    color: var(--ink-2);
+  }
+  .resume-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--ink-2);
+    overflow-wrap: anywhere;
+  }
+  .resume-section {
+    display: grid;
+    gap: 1rem;
+    border-bottom: 1px solid var(--rule);
+    padding-block: 2.5rem;
+  }
+  .resume-label {
+    padding-top: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .resume-body {
+    display: flex;
+    max-width: 48rem;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  .resume-p {
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    color: var(--ink-2);
+  }
+  .resume-entry .resume-p {
+    margin-top: 0.75rem;
+  }
+  .resume-entry-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.25rem 1.5rem;
+  }
+  .resume-org {
+    font-family: var(--font-serif);
+    font-size: 1.625rem;
+    line-height: 1.2;
+  }
+  .resume-dot {
+    color: var(--muted);
+  }
+  .resume-role {
+    color: var(--ink-2);
+  }
+  .resume-when {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    white-space: nowrap;
+    color: var(--muted);
+  }
+  .resume-bullets {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.875rem;
+  }
+  .resume-bullets li {
+    position: relative;
+    padding-left: 1.25rem;
+    line-height: 1.6;
+    color: var(--ink-2);
+  }
+  .resume-bullets li::before {
+    content: "";
+    position: absolute;
+    left: 0.15rem;
+    top: 0.8em;
+    width: 0.45rem;
+    height: 1px;
+    background: var(--muted);
+  }
+  .resume-rows li {
+    border-bottom: 1px solid var(--rule);
+    padding-block: 0.625rem;
+    line-height: 1.55;
+    color: var(--ink-2);
+  }
+  .resume-rows li:first-child {
+    padding-top: 0;
+  }
+  .resume-rows li:last-child {
+    border-bottom: 0;
+  }
+  .resume-rows strong {
+    font-weight: 600;
+    color: var(--ink);
+  }
+  @media (width >= 40rem) {
+    .resume {
+      padding-top: 6rem;
+    }
+  }
+  @media (width >= 48rem) {
+    .resume-section {
+      grid-template-columns: 11rem minmax(0, 1fr);
+      gap: 2.5rem;
+    }
+  }
+  @media (width >= 64rem) {
+    .resume-head {
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+      gap: 4rem;
+    }
+  }
+
+  /* /coo: the order pipeline. A vertical rail on a phone, a horizontal one from 64rem. */
+  .flow {
+    display: grid;
+  }
+  .flow li {
+    position: relative;
+    padding: 0 0 2.25rem 2.75rem;
+  }
+  .flow li:last-child {
+    padding-bottom: 0;
+  }
+  .flow li:not(:last-child)::before {
+    content: "";
+    position: absolute;
+    left: 0.6875rem;
+    top: 1.375rem;
+    bottom: 0;
+    width: 1px;
+    background: var(--band-rule);
+  }
+  .flow-node {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: grid;
+    place-items: center;
+    width: 1.375rem;
+    height: 1.375rem;
+    border-radius: 50%;
+    border: 1px solid var(--band-muted);
+    background: var(--band);
+    font-size: 0.8rem;
+  }
+  .flow-index {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    line-height: 1.375rem;
+    color: var(--band-muted);
+  }
+  .flow-name {
+    margin-top: 0.25rem;
+    font-family: var(--font-serif);
+    font-size: 2rem;
+    line-height: 1.1;
+    color: var(--band-ink);
+  }
+  .flow-body {
+    margin-top: 0.625rem;
+    max-width: 24rem;
+    line-height: 1.6;
+    color: var(--band-muted);
+  }
+  .flow .is-verify .flow-node {
+    border-color: var(--band-proof);
+    background: var(--band-proof);
+    color: var(--band);
+    box-shadow: 0 0 0 6px color-mix(in oklab, var(--band-proof) 18%, transparent);
+  }
+  .flow .is-verify .flow-name {
+    color: var(--band-proof);
+  }
+  @media (width >= 64rem) {
+    .flow {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+    .flow li {
+      padding: 2.75rem 1.75rem 0 0;
+    }
+    .flow li:not(:last-child)::before {
+      left: 1.375rem;
+      right: 0;
+      top: 0.6875rem;
+      bottom: auto;
+      width: auto;
+      height: 1px;
+    }
+    /* An arrowhead where each segment meets the next step. */
+    .flow li:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      right: 0.125rem;
+      top: calc(0.6875rem - 3.5px);
+      border-block: 4px solid transparent;
+      border-left: 6px solid var(--band-muted);
+    }
+  }
+  .trust {
+    border-top: 1px solid var(--band-proof);
+    padding-top: 1.75rem;
+  }
+  .trust-item {
+    border-left: 1px solid var(--band-rule);
+    padding-left: 1rem;
+    line-height: 1.6;
+    color: var(--band-ink);
+  }
+
+  /* /coo: an incident, its fix, and the lesson, as one card. */
+  .incident {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--rule);
+    border-radius: 0.625rem;
+    background: var(--card);
+    padding: 1.75rem;
+  }
+  .incident-title {
+    margin-top: 0.75rem;
+    font-family: var(--font-serif);
+    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+  .incident-fix {
+    margin-block: 1.75rem;
+    border-left: 2px solid var(--proof);
+    padding-left: 1.25rem;
+    line-height: 1.6;
+    color: var(--ink);
+  }
+  .incident-lesson {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: auto;
+    border-top: 1px dashed var(--rule);
+    padding-top: 1.25rem;
+  }
+  @media (width >= 40rem) {
+    .incident {
+      padding: 2.25rem;
+    }
+  }
 }
 
 @keyframes ping {
@@ -509,5 +846,97 @@
   *::after {
     animation: none !important;
     transition: none !important;
+  }
+}
+
+/* The resume PDF (scripts/resume-pdf.ts prints /resume) and anyone printing a page. Site chrome
+   carries print:hidden. Light colors whatever the OS theme, sized for a US Letter page. */
+@page {
+  size: letter;
+  margin: 0.5in 0.6in;
+}
+
+@media print {
+  :root {
+    --paper: #fff;
+    --card: #fff;
+    --ink: #111;
+    --ink-2: #2b2b2b;
+    --muted: #5a5a5a;
+    --rule: #d4d4d4;
+    --proof: #0a6e43;
+  }
+  html {
+    font-size: 9.5pt;
+    background: #fff;
+  }
+  .wrap {
+    max-width: none;
+    padding-inline: 0;
+  }
+  .link {
+    text-decoration: none;
+  }
+  .resume {
+    padding-top: 0;
+  }
+  .resume-head {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: 2rem;
+    padding-bottom: 1rem;
+  }
+  .resume-name {
+    margin-top: 0;
+    font-size: 2.75rem;
+  }
+  .resume-headline {
+    margin-top: 0.35rem;
+    font-size: 1.15rem;
+  }
+  .resume-contact {
+    align-items: flex-end;
+    gap: 0.1rem;
+    font-size: 0.85rem;
+  }
+  .resume-section {
+    grid-template-columns: 7rem minmax(0, 1fr);
+    gap: 1.25rem;
+    padding-block: 0.85rem;
+  }
+  .resume-section:last-child {
+    border-bottom: 0;
+  }
+  .resume-label {
+    padding-top: 0.25rem;
+    font-size: 0.75rem;
+  }
+  .resume-body {
+    max-width: none;
+    gap: 0.8rem;
+  }
+  .resume-p {
+    font-size: 1rem;
+    line-height: 1.45;
+  }
+  .resume-entry .resume-p {
+    margin-top: 0.35rem;
+  }
+  .resume-entry {
+    break-inside: avoid;
+  }
+  .resume-org {
+    font-size: 1.35rem;
+  }
+  .resume-bullets {
+    gap: 0.15rem;
+    margin-top: 0.3rem;
+  }
+  .resume-bullets li {
+    line-height: 1.4;
+  }
+  .resume-rows li {
+    padding-block: 0.2rem;
+    line-height: 1.4;
   }
 }

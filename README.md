@@ -12,4 +12,4 @@ Rebuild in progress (2026). The 2017 to 2020 version lives at the `portfolio-202
 - `npm run typecheck` checks types.
 - `npm run walk` runs the browser walks.
 - `npm run privacy` scans for private data.
-- `npm run resume:pdf` builds the resume PDF.
+- `npm run resume:pdf` prints `/resume` from a running `npm start` to `public/resume.pdf`. Run it after any change to `src/content/resume.md`, then rebuild. A unit test fails until you do.
