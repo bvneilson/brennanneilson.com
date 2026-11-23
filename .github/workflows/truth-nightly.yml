@@ -4,6 +4,11 @@ on:
   schedule:
     - cron: '37 9 * * *'
   workflow_dispatch:
+    inputs:
+      simulate_report_failure:
+        description: 'Demo only: force the report build to fail (manual runs only)'
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -36,12 +41,24 @@ jobs:
         continue-on-error: true
         run: npx playwright test --trace off
 
+      # Builds into a temp file and moves it into place only when it is valid, so a failed build
+      # never leaves a truncated results.json behind.
       - name: Build results.json
+        id: build
         if: always()
-        run: node truth/report.ts truth/out/report.json > truth/out/results.json
+        env:
+          SIMULATE_FAILURE: ${{ github.event_name == 'workflow_dispatch' && inputs.simulate_report_failure }}
+        run: |
+          set -euo pipefail
+          report=truth/out/report.json
+          if [ "$SIMULATE_FAILURE" = true ]; then report=truth/out/does-not-exist.json; fi
+          tmp="$(mktemp)"
+          node truth/report.ts "$report" > "$tmp"
+          jq -e '.results | length > 0' "$tmp" > /dev/null
+          mv "$tmp" truth/out/results.json
 
       - name: Publish results.json to truth-results
-        if: always()
+        if: always() && steps.build.outcome == 'success'
         run: |
           set -euo pipefail
           dir="$(mktemp -d)"
@@ -57,28 +74,59 @@ jobs:
             push --force "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}.git" truth-results
 
       - name: Open or close a truth-failure issue per slug
-        if: always()
+        if: always() && steps.build.outcome == 'success'
         run: |
-          set -euo pipefail
+          set -uo pipefail
           gh label create truth-failure --color B60205 --description 'A claim-walk or review check is failing' 2>/dev/null || true
           open_issue() { # title -> number or empty
             gh issue list --label truth-failure --state open --limit 200 --json number,title \
               | jq -r --arg t "$1" '.[] | select(.title == $t) | .number' | head -n 1
           }
-          jq -r '.results[] | [.slug, .status] | @tsv' truth/out/results.json | while IFS=$'\t' read -r slug status; do
-            title="Truth walk failing: ${slug}"
-            num="$(open_issue "$title")"
+          # Explicit `|| return 1` on every call: this runs under `||`, where set -e is ignored.
+          handle_slug() { # slug status
+            local slug="$1" status="$2" num body
+            local title="Truth walk failing: ${slug}"
+            num="$(open_issue "$title")" || return 1
             if [ "$status" = fail ]; then
               body="The nightly claim-walk for \`${slug}\` failed. Run: ${RUN_URL}"
               if [ -n "$num" ]; then
-                gh issue comment "$num" --body "Still failing. ${body}"
+                gh issue comment "$num" --body "Still failing. ${body}" || return 1
               else
-                gh issue create --label truth-failure --title "$title" --body "$body"
+                gh issue create --label truth-failure --title "$title" --body "$body" || return 1
               fi
             elif [ -n "$num" ]; then
-              gh issue close "$num" --comment "Passing again. Run: ${RUN_URL}"
+              gh issue close "$num" --comment "Passing again. Run: ${RUN_URL}" || return 1
             fi
-          done
+          }
+          failed=0
+          rows="$(jq -r '.results[] | [.slug, .status] | @tsv' truth/out/results.json)" || exit 1
+          while IFS=$'\t' read -r slug status; do
+            handle_slug "$slug" "$status" || { echo "::warning::issue handling failed for ${slug}"; failed=1; }
+          done <<< "$rows"
+          # The report built, so a previous "nightly broken" issue is resolved.
+          broken="$(open_issue 'Truth nightly broken')" || { echo '::warning::could not look up the broken-nightly issue'; failed=1; broken=''; }
+          if [ -n "$broken" ]; then
+            gh issue close "$broken" --comment "Report builds again. Run: ${RUN_URL}" \
+              || { echo '::warning::could not close the broken-nightly issue'; failed=1; }
+          fi
+          exit "$failed"
+
+      # The report build failed: results.json is not published (the last good one stays) and
+      # the COO gets one issue to fix it.
+      - name: Open a Truth nightly broken issue
+        if: always() && steps.build.outcome == 'failure'
+        run: |
+          set -euo pipefail
+          gh label create truth-failure --color B60205 --description 'A claim-walk or review check is failing' 2>/dev/null || true
+          title='Truth nightly broken'
+          num="$(gh issue list --label truth-failure --state open --limit 200 --json number,title \
+            | jq -r --arg t "$title" '.[] | select(.title == $t) | .number' | head -n 1)"
+          body="The nightly could not build results.json, so truth-results was left unchanged. Run: ${RUN_URL}"
+          if [ -n "$num" ]; then
+            gh issue comment "$num" --body "Still broken. ${body}"
+          else
+            gh issue create --label truth-failure --title "$title" --body "$body"
+          fi
 
       - name: Resume review check
         if: always()
