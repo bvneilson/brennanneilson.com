@@ -2,19 +2,22 @@ import { StatsSchema, TruthResultsSchema } from '../content/types.ts';
 import type { Stats, TruthResults } from '../content/types.ts';
 
 const BASE = 'https://raw.githubusercontent.com/bvneilson/brennanneilson.com';
+const FETCH_TIMEOUT_MS = 3000;
 export const TRUTH_URL = `${BASE}/truth-results/results.json`;
 export const STATS_URL = `${BASE}/site-stats/stats.json`;
 
-const REVALIDATE_SECONDS = 3600;
-
-/** Fetch and validate a published JSON file. Any failure yields null, never a throw, and never logs the body. */
+/**
+ * Fetch and validate a published JSON file, fresh on every request (no Next data cache), so a card
+ * hides on the first request after its walk fails. A slow origin is cut off after 3 s. Any failure yields null, never a throw, and
+ * never logs the body.
+ */
 async function fetchValidated<T>(
   url: string,
   parse: (raw: unknown) => T | null,
   fetchFn: typeof fetch,
 ): Promise<T | null> {
   try {
-    const res = await fetchFn(url, { next: { revalidate: REVALIDATE_SECONDS } });
+    const res = await fetchFn(url, { cache: 'no-store', signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) });
     if (!res.ok) return null;
     return parse(await res.json());
   } catch {

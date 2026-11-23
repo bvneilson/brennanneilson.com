@@ -28,7 +28,7 @@ export const projects: Project[] = [
     slug: 'brennan-builds',
     name: 'Brennan Builds',
     url: 'https://brennanbuilds.dev',
-    claim: 'Click through 12 live demo websites without signing up; custom builds from $500.',
+    claim: 'Click through 12 live demo websites without signing up. Custom builds from $500.',
     tags: ['web studio', 'templates'],
   },
   {

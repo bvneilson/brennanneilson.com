@@ -1,7 +1,7 @@
 import type { Page } from '@playwright/test';
 import { expect, projectFor, test } from './fixtures.ts';
 
-// Claim: click through 12 live demo websites without signing up; custom builds from $500.
+// Claim: click through 12 live demo websites without signing up. Custom builds from $500.
 const { url } = projectFor('brennan-builds');
 const DEMOS = 12;
 

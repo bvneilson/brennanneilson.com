@@ -14,7 +14,7 @@
     "typecheck": "tsc --noEmit",
     "walk": "playwright test",
     "privacy": "node scripts/privacy-scan.ts",
-    "resume:pdf": "node scripts/build-resume-pdf.ts"
+    "resume:pdf": "node scripts/resume-pdf.ts"
   },
   "dependencies": {
     "next": "^16.4.6",
@@ -26,9 +26,12 @@
   "devDependencies": {
     "@playwright/test": "^1.65.1",
     "@tailwindcss/postcss": "^4.3.5",
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/react": "^16.3.3",
     "@types/node": "^24",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
+    "jsdom": "^31.0.1",
     "postcss": "^8.5.33",
     "tailwindcss": "^4.3.5",
     "typescript": "^7.0.2",

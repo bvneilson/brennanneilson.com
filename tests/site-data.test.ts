@@ -33,12 +33,34 @@ describe('URLs', () => {
   });
 });
 
+describe('timestamps inside the files', () => {
+  const result = {
+    slug: 'a',
+    claim: 'c',
+    status: 'pass',
+    finishedAt: '2026-11-22T12:00:00.000Z',
+    runUrl: 'https://github.com/x/y/actions/runs/1',
+  };
+  it('accepts ISO datetimes with Z or an offset', async () => {
+    const body = { ...truth, results: [result, { ...result, slug: 'b', finishedAt: '2026-11-22T05:00:00-07:00' }] };
+    expect(await fetchTruthResults(asFetch(async () => okJson(body)))).toEqual(body);
+  });
+  it.each(['not a date', '2026-11-22', 'Nov 22 2026', ''])('rejects the whole results file for finishedAt %j', async (bad) => {
+    const body = { ...truth, results: [result, { ...result, slug: 'b', finishedAt: bad }] };
+    expect(await fetchTruthResults(asFetch(async () => okJson(body)))).toBeNull();
+  });
+  it.each(['not a date', '2026-11-22', ''])('rejects the whole stats file for asOf %j', async (bad) => {
+    const body = { ...stats, stats: [{ ...stats.stats[0], asOf: bad }] };
+    expect(await fetchStats(asFetch(async () => okJson(body)))).toBeNull();
+  });
+});
+
 for (const c of cases) {
   describe(c.name, () => {
-    it('returns the parsed object for a valid body, requesting the right URL with revalidate', async () => {
+    it('returns the parsed object for a valid body, fetching the right URL fresh (no-store)', async () => {
       const f = asFetch(async () => okJson(c.good));
       expect(await c.run(f)).toEqual(c.good);
-      expect(f).toHaveBeenCalledWith(c.url, { next: { revalidate: 3600 } });
+      expect(f).toHaveBeenCalledWith(c.url, { cache: 'no-store', signal: expect.any(AbortSignal) });
     });
     it('returns null on 404', async () => {
       expect(await c.run(asFetch(async () => new Response('nope', { status: 404 })))).toBeNull();
@@ -49,11 +71,24 @@ for (const c of cases) {
       });
       expect(await c.run(f)).toBeNull();
     });
+    it('passes an abort signal and returns null when the origin never answers', async () => {
+      const f = asFetch(
+        (_url, init) =>
+          new Promise<Response>((_res, rej) => {
+            init?.signal?.addEventListener('abort', () => rej(new Error('aborted')));
+          }),
+      );
+      expect(await c.run(f)).toBeNull();
+      expect(f).toHaveBeenCalledWith(c.url, { cache: 'no-store', signal: expect.any(AbortSignal) });
+    }, 8000);
     it('returns null on non-JSON', async () => {
       expect(await c.run(asFetch(async () => new Response('<html>', { status: 200 })))).toBeNull();
     });
     it('returns null for schemaVersion 2', async () => {
       expect(await c.run(asFetch(async () => okJson({ ...c.good, schemaVersion: 2 })))).toBeNull();
+    });
+    it('returns null when generatedAt is not an ISO datetime', async () => {
+      expect(await c.run(asFetch(async () => okJson({ ...c.good, generatedAt: 'yesterday' })))).toBeNull();
     });
     it('returns null for valid JSON failing the schema another way', async () => {
       const { results: _r, stats: _s, ...bad } = c.good as Record<string, unknown>;
