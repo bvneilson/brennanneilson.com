@@ -60,7 +60,7 @@ export const copy = {
   },
   openSource: {
     label: 'Open source',
-    body: "One piece of my COO lives in its own public repo. You're welcome to read the code and try it out!",
+    body: "agent-reaper is a small MIT-licensed package I released on GitHub. It supervises headless agent processes and kills the whole process tree on timeout. It came out of my COO. You're welcome to read the code!",
     link: 'View it on GitHub',
   },
   experience: {
