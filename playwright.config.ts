@@ -11,6 +11,9 @@ export default defineConfig({
   reporter: [['json', { outputFile: 'truth/out/report.json' }], ['list']],
   use: {
     trace: 'off',
+    // Context routing can't see requests a service worker handles, so a product's SW could carry a
+    // POST past the read-only guard (R16).
+    serviceWorkers: 'block',
     actionTimeout: 20_000,
     navigationTimeout: 45_000,
   },

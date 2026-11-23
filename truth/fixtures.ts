@@ -28,6 +28,15 @@ export function isAnalytics(url: string): boolean {
   }
 }
 
+/**
+ * True only for Chrome's own "Failed to load resource" line about a request the guard blocked.
+ * Any other console error stays, even if its location is a blocked URL (a page that POSTs to its
+ * own URL, like a Next server action, logs its script errors at that URL).
+ */
+export function isBlockedLoadNoise(text: string, at: string, blockedUrls: ReadonlySet<string>): boolean {
+  return at !== '' && blockedUrls.has(at) && text.startsWith('Failed to load resource');
+}
+
 export function projectFor(slug: string): Project {
   const project = projects.find((p) => p.slug === slug);
   if (!project) throw new Error(`No project "${slug}" in src/content/projects.ts`);
@@ -92,8 +101,7 @@ export const test = base.extend<{ guard: void }>({
         const pageUrl = msg.page()?.url();
         if (!onSite(pageUrl)) return;
         const at = msg.location().url;
-        // Chrome logs "Failed to load resource" for every request we blocked. That's ours, not the page's.
-        if (at && blockedUrls.has(at)) return;
+        if (isBlockedLoadNoise(msg.text(), at, blockedUrls)) return;
         consoleErrors.push(`${msg.text()}${at ? ` @ ${at}` : ''} (on ${pageUrl})`);
       });
       context.on('weberror', (err) => {

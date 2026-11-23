@@ -17,6 +17,10 @@ const NAMES = Object.keys(HOUSEHOLD);
 const DRAWS = 5;
 
 test.describe('draw-night', () => {
+  // A draw is random. A retry that passes would erase a self, household or swap pair the first
+  // attempt saw, so a violation must fail the walk outright (R14).
+  test.describe.configure({ retries: 0 });
+
   for (let draw = 1; draw <= DRAWS; draw++) {
     test(`pass-the-phone draw ${draw} of ${DRAWS}: 6 people, 2 households, no self, partner or swap`, async ({
       page,
