@@ -14,9 +14,16 @@ describe('format', () => {
     [ago(60 * MIN), '1 hour ago'],
     [ago(47 * 60 * MIN), '47 hours ago'],
     [ago(48 * 60 * MIN), '2 days ago'],
-    ['not a date', 'just now'],
   ])('timeAgo(%s) is "%s"', (iso, want) => {
     expect(timeAgo(iso, NOW)).toBe(want);
+  });
+
+  it('prints nothing for a malformed timestamp, and never throws', () => {
+    for (const bad of ['not a date', '', '2026-13-45T99:99:99Z']) {
+      expect(timeAgo(bad, NOW)).toBe('');
+      expect(utcStamp(bad)).toBe('');
+      expect(shortDate(bad)).toBe('');
+    }
   });
 
   it('prints dates in UTC, whatever the server zone', () => {

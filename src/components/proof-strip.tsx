@@ -11,7 +11,8 @@ import { RelativeTime } from './relative-time.tsx';
  * an empty work grid simply drop their tiles: no tile ever shows a default or cached number.
  */
 export function ProofStrip({ stats, projects, now }: { stats: Stat[]; projects: VisibleProject[]; now: Date }) {
-  const lastRun = projects.map((p) => p.verifiedAt).sort().at(-1);
+  // By time, not by string: timestamps may carry an offset, so text order isn't time order.
+  const lastRun = projects.map((p) => p.verifiedAt).sort((a, b) => Date.parse(a) - Date.parse(b)).at(-1);
   if (stats.length === 0 && !lastRun) return null;
   return (
     <section aria-labelledby="proof-heading" className="mt-16 sm:mt-20">

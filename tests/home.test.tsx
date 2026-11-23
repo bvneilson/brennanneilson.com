@@ -119,6 +119,17 @@ describe('home', () => {
     expect(within(tile).getByRole('link', { name: /every result/ }).getAttribute('href')).toBe('/verified');
   });
 
+  it('the products tile picks the latest run by time, even when timestamps carry an offset', () => {
+    // 13:30 at -07:00 is 20:30Z, later than 14:00Z, though it sorts first as text.
+    const t = truth({ 'draw-night': { finishedAt: '2026-11-23T13:30:00.000-07:00' } });
+    for (const r of t.results) if (r.slug !== 'draw-night') r.finishedAt = '2026-11-23T14:00:00.000Z';
+    const later = new Date('2026-11-23T21:30:00.000Z');
+    vi.setSystemTime(later); // the browser-side recompute reads this clock
+    render(<HomePage truth={t} stats={stats()} now={later} />);
+    const tile = screen.getByText(/products, verified nightly/).closest('[data-tile]') as HTMLElement;
+    expect(within(tile).getByText('1 hour ago')).toBeTruthy();
+  });
+
   it('the products tile hides when no project is visible', () => {
     render(<HomePage truth={null} stats={stats()} now={NOW} />);
     expect(screen.queryByText(/verified nightly/)).toBeNull();

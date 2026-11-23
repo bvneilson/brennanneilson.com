@@ -1,8 +1,9 @@
 import { HomePage } from '../components/home-page.tsx';
 import { fetchStats, fetchTruthResults } from '../lib/site-data.ts';
 
-// Cards and tiles are judged at request time, at most an hour apart, never at build time.
-export const revalidate = 3600;
+// Rendered per request, never cached: cards and tiles are judged against the results as they
+// are right now, so a failed walk hides its card on the next page view (R32).
+export const dynamic = 'force-dynamic';
 
 export default async function Home() {
   const [truth, stats] = await Promise.all([fetchTruthResults(), fetchStats()]);

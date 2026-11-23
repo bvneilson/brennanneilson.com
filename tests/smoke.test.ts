@@ -1,17 +1,19 @@
 import { expect, test } from "vitest";
 
-// Rendering is covered in home.test.tsx. This pins the page modules: a component each, and an
-// hourly revalidate so cards hide at request time, not at build time (spec §7.4).
-test("home page module exports a component and revalidates hourly", async () => {
-  const mod = await import("../src/app/page.tsx");
+// Rendering is covered in home.test.tsx. This pins the page modules: a component each, rendered
+// per request with no ISR window, so a failed walk hides its card on the next view (spec §7.4, R32).
+test("home page module exports a component and renders per request", async () => {
+  const mod = (await import("../src/app/page.tsx")) as Record<string, unknown>;
   expect(typeof mod.default).toBe("function");
-  expect(mod.revalidate).toBe(3600);
+  expect(mod.dynamic).toBe("force-dynamic");
+  expect(mod.revalidate).toBeUndefined();
 });
 
-test("/verified page module exports a component and revalidates hourly", async () => {
-  const mod = await import("../src/app/verified/page.tsx");
+test("/verified page module exports a component and renders per request", async () => {
+  const mod = (await import("../src/app/verified/page.tsx")) as Record<string, unknown>;
   expect(typeof mod.default).toBe("function");
-  expect(mod.revalidate).toBe(3600);
+  expect(mod.dynamic).toBe("force-dynamic");
+  expect(mod.revalidate).toBeUndefined();
 });
 
 // R29: pages and their imports stay pure. truth/ holds the walk CLI, which pulls node:fs.

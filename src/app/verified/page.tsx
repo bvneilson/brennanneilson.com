@@ -3,7 +3,8 @@ import { VerifiedPage } from '../../components/verified-page.tsx';
 import { copy } from '../../content/copy.ts';
 import { fetchTruthResults } from '../../lib/site-data.ts';
 
-export const revalidate = 3600;
+// Per request, like home, so both pages always read the same results (R32).
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: copy.verified.title,

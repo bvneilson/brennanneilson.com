@@ -20,7 +20,7 @@ export const copy = {
     headline: 'AI engineer who ships',
     lede: [
       "Hi, I'm Brennan, and thanks so much for stopping by! I build AI agents that do real work, and I don't take their word for it.",
-      'I check every result against the live system. Every project you see below gets tested in a real browser every night. If one fails, it comes off this page until it passes again.',
+      'I verify their work against real system state. Every project you see below gets tested in a real browser every night. If one fails, it comes off this page until it passes again.',
     ],
   },
   proof: {
@@ -36,7 +36,7 @@ export const copy = {
   coo: {
     label: 'The COO',
     heading: 'I built an AI COO that takes a real order all the way to a verified live site.',
-    body: "It's a team of AI agents I designed and run on my own time. They plan the work, build it, check it, and ship it, and nothing counts as done until it's been checked on the live site.",
+    body: "It's a team of AI agents I designed and run on my own time. They plan the work, build it, verify it, and take it live.",
     stepsLabel: 'How an order moves through the COO',
     steps: ['order', 'plan', 'build', 'verify', 'live'],
     quote: 'Agents are unreliable narrators of their own success, so I verify against real system state.',
@@ -46,7 +46,7 @@ export const copy = {
     label: 'Work',
     heading: 'Live projects, tested every night',
     intro:
-      'Each card makes one claim, and a browser test checks that claim on the live site every night. You can open any run and see exactly what it checked!',
+      'Each card makes one claim, and a browser test checks that claim on the live site every night. The verified mark on each card links to the run that tested it!',
     verified: 'verified',
     viewRun: 'view the test run',
     visit: 'Visit',
@@ -63,7 +63,7 @@ export const copy = {
   contact: {
     label: 'Contact',
     heading: "I'd really love to hear from you!",
-    body: 'Email is the best way to reach me, and you can find me on GitHub and LinkedIn too.',
+    body: 'Email is the best way to reach me, and you can find me on GitHub and LinkedIn too!',
     email: 'Email',
     github: 'GitHub',
     linkedin: 'LinkedIn',
