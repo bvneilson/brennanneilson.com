@@ -10,7 +10,7 @@ American Fork, UT · bvneilson@gmail.com · linkedin.com/in/brennanneilson · gi
 
 ## Summary
 
-I'm a senior software engineer with 10 years of shipping production web apps. I led my team's adoption of AI-assisted development by building the tooling that made it worth using. On my own time, I designed and run a multi-agent system that takes a real customer order all the way to a verified live site! It taught me that agents are unreliable narrators of their own success. So I verify their work against real system state. I still own full-stack features across React, TypeScript, Clojure, ClojureScript, Node, and PostgreSQL.
+I'm a senior software engineer with 10 years of shipping production web apps. I led my team's adoption of AI-assisted development by building the tooling that made it worth using. On my own time, I designed and run a multi-agent system that takes a real customer order all the way to a verified live site. It taught me that agents are unreliable narrators of their own success. So I verify their work against real system state. I still own full-stack features across React, TypeScript, Clojure, ClojureScript, Node, and PostgreSQL.
 
 ## Skills
 
@@ -66,7 +66,7 @@ I'm a senior software engineer with 10 years of shipping production web apps. I 
 
 Designed, built, and run a system that takes a customer order for a website and drives it to a live, verified site. It assembles a build brief, dispatches the work to a Claude Code agent, deploys it, and verifies the result before marking the order complete. Built with TypeScript and Node on Bun, PostgreSQL with an event-sourced job log, the Anthropic API, Vercel, and MCP servers for tool access.
 
-Most of the engineering went into the trust layer. An LLM judge scores each build against the brief before anything becomes customer-orderable, and a separate reconciler is the only component allowed to flip that flag. Deterministic verifiers replaced self-reported success after a canceled deploy was misclassified as an error and quietly failed every promotion behind it. Every structural change ships behind a flag that logs the action it would have taken without taking it, which has caught six of my own defects before a customer saw them!
+The engineering that mattered was the trust layer, not the prompting. An LLM judge scores each build against the brief before anything becomes customer-orderable, and a separate reconciler is the only component allowed to flip that flag. Deterministic verifiers replaced self-reported success after a canceled deploy was misclassified as an error and quietly failed every promotion behind it. Every structural change ships behind a flag that logs the action it would have taken without taking it, which has caught six of my own defects before a customer saw them.
 
 ## Education
 

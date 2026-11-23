@@ -28,7 +28,7 @@ export const coo = {
     label: "How it's built",
     heading: 'Every order takes the same five steps',
     intro:
-      'Most of my engineering went into step four. A build only counts once something other than the agent that built it says it works!',
+      'The engineering that mattered was the trust layer, not the prompting. A build only counts once something other than the agent that built it says it works!',
     listLabel: 'How an order moves through the COO',
     steps: [
       { name: 'Order', body: 'A customer orders a website.' },
@@ -78,14 +78,14 @@ export const coo = {
         body: [
           "A storefront domain returned 200 OK while it served a registrar's parked page. A health check that only looked at status codes called the site healthy. There was no store there at all!",
         ],
-        fix: 'Nothing on this site counts a status code as proof. Every claim here gets a browser test that walks through the claim itself, every night, at desktop and phone sizes.',
+        fix: 'No project here counts as verified on a status code. Each one gets a browser test that walks through its claim, every night, at desktop and phone sizes.',
         later: '',
         lesson: 'A 200 OK only means the server answered.',
       },
     ],
   },
   closing: {
-    body: 'You can check every claim on this site the same way.',
+    body: 'Every project on this site makes one claim, and a browser test checks it every night.',
     link: 'See how each one did on its latest run',
   },
 };

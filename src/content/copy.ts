@@ -93,7 +93,7 @@ export const copy = {
     label: 'Resume',
     contactLabel: 'Contact details',
     pdf: 'Download PDF',
-    pdfNote: 'The PDF is printed from this page, and a test fails if the two ever drift apart!',
+    pdfNote: 'The PDF is printed from this page, and a test fails if the PDF falls behind the resume!',
     reviewed: 'Reviewed',
     refreshing: "My resume is being refreshed, and it'll be back here soon!",
   },

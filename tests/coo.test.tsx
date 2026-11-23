@@ -1,6 +1,8 @@
 // @vitest-environment jsdom
 import { cleanup, render, screen, within } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import denylist from '../scripts/privacy-denylist.json';
+import { scanText } from '../scripts/privacy-scan.ts';
 import { CooPage } from '../src/components/coo-page.tsx';
 import { coo } from '../src/content/coo.ts';
 import type { Stats } from '../src/content/types.ts';
@@ -83,12 +85,14 @@ describe('/coo', () => {
   });
 });
 
-describe('/coo copy (R36)', () => {
+describe('/coo copy (R36, R40)', () => {
   const text = JSON.stringify(coo);
-  it('names no business: a storefront domain and a registrar, nothing more', () => {
-    expect(text).toMatch(/storefront domain/);
-    expect(text).toMatch(/registrar/);
-    expect(text).not.toMatch(/GoDaddy|Namecheap|Titled|Apparel|\.com\b/i);
+  it('names no domain in the incident stories', () => {
+    expect(JSON.stringify(coo.incidents.stories)).not.toMatch(/\b[a-z0-9-]+\.(com|net|org|shop|store|co)\b/i);
+  });
+
+  it('passes the privacy scan, the hashed denylist included', () => {
+    expect(scanText('src/content/coo.ts', text, new Set(denylist.hashes))).toEqual([]);
   });
 
   it('has no em dash, no semicolon, and no "hire me"', () => {

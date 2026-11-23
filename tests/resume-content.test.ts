@@ -3,14 +3,15 @@ import { describe, expect, it } from 'vitest';
 import { loadDenyHashes, scanText } from '../scripts/privacy-scan.ts';
 import { parseResume, readReviewedAt } from '../src/lib/resume.ts';
 
-// The spec §5 scrub, pinned against the file that ships. His employer reads this site, so its
-// entry keeps the role line, the dates and generic bullets, and nothing that names a customer, a
-// tool or an incident. Words that must never appear are split so this file doesn't carry them whole.
+// The spec §5 scrub, pinned against the file that ships. The current employer keeps its role line,
+// dates and generic bullets, and nothing that names a customer, a tool or an incident. Scrubbed
+// terms are checked through hashes only (the denylist `npm run privacy` uses), so this public file
+// never spells out what it scrubs.
 const PATH = 'src/content/resume.md';
 const md = readFileSync(new URL(`../${PATH}`, import.meta.url), 'utf8');
 const EMPLOYER = new RegExp('ban' + 'zai', 'i');
-// Pathom and Polylith hint at the employer's internal stack (R39).
-const SCRUBBED = ['FI' + 'CO', 'Post' + 'Hog', 'ECS', 'RDS', 'Pathom', 'Polylith'];
+/** Hashes of terms the rest of the repo may use but the resume must not (node scripts/privacy-hash.ts). */
+const RESUME_ONLY = ['67e5a3025bc013d09e3a1e6659f2e53efc7d137272ffe72b6dc8344f578461cf'];
 
 describe('src/content/resume.md', () => {
   it('has a valid reviewedAt in its front-matter (R37)', () => {
@@ -31,13 +32,9 @@ describe('src/content/resume.md', () => {
     expect(lines[0]).toMatch(/^### /);
   });
 
-  it.each(SCRUBBED)('never says %s', (word) => {
-    expect(md).not.toMatch(new RegExp(`\\b${word}\\b`, 'i'));
-  });
-
-  it('passes the privacy scan, the hashed denylist included', () => {
+  it('passes the privacy scan, with the hashed denylist and the resume-only scrub terms', () => {
     const deny = loadDenyHashes(new URL('../scripts/privacy-denylist.json', import.meta.url).pathname);
-    expect(scanText(PATH, md, deny)).toEqual([]);
+    expect(scanText(PATH, md, new Set([...deny, ...RESUME_ONLY]))).toEqual([]);
   });
 
   it('keeps only the city in its location', () => {
