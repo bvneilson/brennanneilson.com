@@ -83,7 +83,7 @@ export const copy = {
     heading: 'Every claim and how it did on its latest run',
     lede: [
       'Every night, a browser test walks through each claim on the live site, once at desktop size and once at phone size. A claim only passes if it works at both!',
-      'When a claim fails, or its last pass is more than 48 hours old, its card comes off the home page until it passes again. Failures stay listed here so you can see them too.',
+      'When a claim fails, or its last pass is more than 48 hours old, its card comes off the home page until it passes again. Failures stay listed here so you can see them too!',
     ],
     of: 'of',
     passing: 'passing',

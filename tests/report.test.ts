@@ -232,7 +232,7 @@ describe('v1 projects wiring', () => {
       [
         'brennan-builds',
         'https://brennanbuilds.dev',
-        'Click through 12 live demo websites without signing up; custom builds from $500.',
+        'Click through 12 live demo websites without signing up. Custom builds from $500.',
       ],
       [
         'golf-toolbox',

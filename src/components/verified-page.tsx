@@ -1,9 +1,9 @@
 import { copy } from '../content/copy.ts';
 import { projects } from '../content/projects.ts';
+import { SITE_CLAIM, SITE_SLUG } from '../content/site-claim.ts';
 import type { TruthResults } from '../content/types.ts';
 import { claimRows, type ClaimRow, type ClaimStatus } from '../lib/claim-status.ts';
 import { utcStamp } from '../lib/format.ts';
-import { SITE_CLAIM, SITE_SLUG } from '../../truth/report.ts';
 import { ArrowUpRightIcon } from './icons.tsx';
 
 const SUBJECTS = [

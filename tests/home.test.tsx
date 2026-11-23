@@ -6,8 +6,8 @@ import { HomePage } from '../src/components/home-page.tsx';
 import { OpenSourceBand } from '../src/components/open-source-band.tsx';
 import { VerifiedPage } from '../src/components/verified-page.tsx';
 import { projects } from '../src/content/projects.ts';
+import { SITE_CLAIM, SITE_SLUG } from '../src/content/site-claim.ts';
 import type { ClaimResult, Stats, TruthResults } from '../src/content/types.ts';
-import { SITE_CLAIM, SITE_SLUG } from '../truth/report.ts';
 
 const NOW = new Date('2026-11-23T15:00:00.000Z');
 const HOUR = 3600_000;
