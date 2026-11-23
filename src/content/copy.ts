@@ -1,0 +1,106 @@
+// Every word of first-person copy on the home and /verified pages. Keep it here, and keep it plain
+// data (strings only), so `node scripts/copy-text.ts` can hand all of it to the voice gate.
+// Project claims live in projects.ts and stat labels come from the live stats file.
+
+export const copy = {
+  meta: {
+    title: 'Brennan Neilson, AI engineer who ships',
+    description:
+      "I'm an AI and full-stack engineer in Utah. I build AI agents that do real work, and every project on this site is tested in a real browser every night.",
+  },
+  nav: {
+    skip: 'Skip to content',
+    label: 'Main',
+    work: 'Work',
+    verified: 'Verified',
+    contact: 'Contact',
+  },
+  hero: {
+    role: 'AI / full-stack engineer · 10 years · Utah',
+    headline: 'AI engineer who ships',
+    lede: [
+      "Hi, I'm Brennan, and thanks so much for stopping by! I build AI agents that do real work, and I don't take their word for it.",
+      'I check every result against the live system. Every project you see below gets tested in a real browser every night. If one fails, it comes off this page until it passes again.',
+    ],
+  },
+  proof: {
+    heading: 'Live numbers',
+    productOne: 'product, verified nightly',
+    productMany: 'products, verified nightly',
+    lastRun: 'last run',
+    updated: 'updated',
+    source: 'Source:',
+    productsSource: 'Playwright tests in GitHub Actions.',
+    productsLink: 'See every result',
+  },
+  coo: {
+    label: 'The COO',
+    heading: 'I built an AI COO that takes a real order all the way to a verified live site.',
+    body: "It's a team of AI agents I designed and run on my own time. They plan the work, build it, check it, and ship it, and nothing counts as done until it's been checked on the live site.",
+    stepsLabel: 'How an order moves through the COO',
+    steps: ['order', 'plan', 'build', 'verify', 'live'],
+    quote: 'Agents are unreliable narrators of their own success, so I verify against real system state.',
+    cta: 'Read the case study',
+  },
+  work: {
+    label: 'Work',
+    heading: 'Live projects, tested every night',
+    intro:
+      'Each card makes one claim, and a browser test checks that claim on the live site every night. You can open any run and see exactly what it checked!',
+    verified: 'verified',
+    viewRun: 'view the test run',
+    visit: 'Visit',
+    unavailable: 'Verification is temporarily unavailable.',
+    unavailableMore: 'The cards will be back as soon as the latest results load!',
+    empty: 'No project has a fresh pass right now, so there are no cards to show.',
+    emptyLink: 'See every result on the verified page',
+  },
+  openSource: {
+    label: 'Open source',
+    body: "One piece of my COO lives in its own public repo. You're welcome to read the code and try it out!",
+    link: 'View it on GitHub',
+  },
+  contact: {
+    label: 'Contact',
+    heading: "I'd really love to hear from you!",
+    body: 'Email is the best way to reach me, and you can find me on GitHub and LinkedIn too.',
+    email: 'Email',
+    github: 'GitHub',
+    linkedin: 'LinkedIn',
+    studio: 'Need a website? Brennan Builds is my web studio.',
+    studioLink: 'Work with me',
+    studioName: 'Brennan Builds',
+  },
+  footer: {
+    source: "This site's code and its nightly tests are public on GitHub, so you can check my work too!",
+    sourceLink: 'Read the source',
+    verifiedLink: 'Latest results',
+  },
+  verified: {
+    title: 'Verified',
+    description: 'Every claim on brennanneilson.com and how it did on its latest browser test.',
+    label: 'Verified',
+    heading: 'Every claim and how it did on its latest run',
+    lede: [
+      'Every night, a browser test walks through each claim on the live site, once at desktop size and once at phone size. A claim only passes if it works at both!',
+      'When a claim fails, or its last pass is more than 48 hours old, its card comes off the home page until it passes again. Failures stay listed here so you can see them too.',
+    ],
+    of: 'of',
+    passing: 'passing',
+    latestRun: 'Latest run',
+    viewLatestRun: 'View the run on GitHub',
+    listLabel: 'Claims',
+    lastRun: 'Last run',
+    viewRun: 'View run',
+    status: {
+      pass: 'passing',
+      fail: 'failing',
+      stale: 'stale',
+      missing: 'not run yet',
+    },
+    staleNote: 'Stale means the last pass is more than 48 hours old, or it tested an older wording of the claim.',
+    siteName: 'brennanneilson.com',
+    unavailable: 'Verification is temporarily unavailable.',
+    unavailableMore: 'The results will show up here as soon as they load!',
+  },
+};
