@@ -1,3 +1,5 @@
+import { FUTURE_TOLERANCE_MS } from './visibility.ts';
+
 export type ResumeFreshness = 'current' | 'review-due' | 'hidden';
 
 const DAY_MS = 24 * 3600_000;
@@ -8,6 +10,7 @@ export function resumeFreshness(reviewedAt: string, now: Date): ResumeFreshness 
   const t = Date.parse(reviewedAt);
   if (Number.isNaN(t)) return 'hidden';
   const age = now.getTime() - t;
+  if (age < -FUTURE_TOLERANCE_MS) return 'hidden';
   if (age >= HIDDEN_AFTER_MS) return 'hidden';
   if (age >= REVIEW_DUE_AFTER_MS) return 'review-due';
   return 'current';

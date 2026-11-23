@@ -5,6 +5,7 @@ import {
   visibleStats,
   VERIFIED_MAX_AGE_MS,
   STAT_MAX_AGE_MS,
+  FUTURE_TOLERANCE_MS,
 } from '../src/lib/visibility.ts';
 import type { Project, Stats, TruthResults } from '../src/content/types.ts';
 
@@ -41,6 +42,14 @@ const result = (
 });
 
 describe('isFresh', () => {
+  it('is true at exactly 1h in the future', () => {
+    const iso = new Date(NOW.getTime() + FUTURE_TOLERANCE_MS).toISOString();
+    expect(isFresh(iso, VERIFIED_MAX_AGE_MS, NOW)).toBe(true);
+  });
+  it('is false at 1h + 1ms in the future', () => {
+    const iso = new Date(NOW.getTime() + FUTURE_TOLERANCE_MS + 1).toISOString();
+    expect(isFresh(iso, VERIFIED_MAX_AGE_MS, NOW)).toBe(false);
+  });
   it('is false for an unparseable date', () => {
     expect(isFresh('not-a-date', VERIFIED_MAX_AGE_MS, NOW)).toBe(false);
   });
@@ -55,6 +64,10 @@ describe('isFresh', () => {
 });
 
 describe('visibleProjects', () => {
+  it('shows a project verified at exactly 48h', () => {
+    const t = truth([result('a', { finishedAt: ago(VERIFIED_MAX_AGE_MS) })]);
+    expect(visibleProjects([project('a')], t, NOW)).toHaveLength(1);
+  });
   it('shows a passing project verified 47h ago, with verifiedAt and runUrl', () => {
     const t = truth([result('a', { finishedAt: ago(47 * HOUR) })]);
     const out = visibleProjects([project('a')], t, NOW);
@@ -99,6 +112,9 @@ describe('visibleStats', () => {
   });
   it('hides a stat at 7d + 1min', () => {
     expect(visibleStats(stats(ago(STAT_MAX_AGE_MS + 60_000)), NOW)).toEqual([]);
+  });
+  it('shows a stat at exactly 7d', () => {
+    expect(visibleStats(stats(ago(STAT_MAX_AGE_MS)), NOW)).toHaveLength(1);
   });
   it('shows a stat at 6d 23h', () => {
     expect(visibleStats(stats(ago(6 * DAY + 23 * HOUR)), NOW)).toHaveLength(1);
