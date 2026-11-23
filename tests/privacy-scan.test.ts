@@ -6,7 +6,8 @@ const deny = new Set([hashTerm('zebra quartz'), hashTerm('moon-base-9'), hashTer
 // Assembled at runtime so this test file passes its own scan.
 const fakeToken = 'gh' + 'p_' + 'a'.repeat(36)
 const fakePhone = ['801', '555', '0142'].join('-')
-const banzai = 'Ban' + 'zai'
+const ban = 'ban'
+const employer = 'Ban' + 'zai'
 
 describe('scanText', () => {
   it('reports a token and a phone number with their lines', () => {
@@ -33,25 +34,28 @@ describe('scanText', () => {
   })
 
   it('allows the banned name only on a ### role line in the resume', () => {
-    const resume = `## Experience\n### ${banzai}, Engineer\nworked at ${banzai}`
+    const resume = `## Experience\n### ${employer}, Engineer\nworked at ${employer}`
     expect(scanText('src/content/resume.md', resume, deny)).toEqual([
       { path: 'src/content/resume.md', line: 3, kind: 'banzai-outside-role-line' },
     ])
-    expect(scanText('src/content/other.md', `### ${banzai}`, deny)).toEqual([
+    expect(scanText('src/content/other.md', `### ${employer}`, deny)).toEqual([
       { path: 'src/content/other.md', line: 1, kind: 'banzai-outside-role-line' },
     ])
   })
 
   it('never includes matched text in findings', () => {
-    const text = `${fakeToken} ${fakePhone} zebra quartz ${banzai}`
+    const text = `${fakeToken} ${fakePhone} zebra quartz ${employer}`
     const out = JSON.stringify(scanText('a.md', text, deny))
-    for (const leak of [fakeToken, fakePhone, 'zebra', 'quartz', banzai]) {
+    for (const leak of [fakeToken, fakePhone, 'zebra', 'quartz', employer]) {
       expect(out).not.toContain(leak)
     }
   })
 
   it('flags grid and street addresses without echoing them', () => {
-    const text = '100 N 200 E\nlive at 42 Maple Street.\n12 West 300 South'
+    const grid = ['100', 'N', '200', 'E'].join(' ')
+    const street = ['42', 'Maple', 'Street'].join(' ')
+    const spelled = ['12', 'West', '300', 'South'].join(' ')
+    const text = `${grid}\nlive at ${street}.\n${spelled}`
     const out = scanText('a.md', text, deny)
     expect(out.map((f) => [f.line, f.kind])).toEqual([[1, 'address'], [2, 'address'], [3, 'address']])
     expect(JSON.stringify(out)).not.toContain('Maple')
@@ -59,5 +63,11 @@ describe('scanText', () => {
 
   it('does not flag ordinary numeric prose', () => {
     expect(scanText('a.md', 'Node 24 runs\n3 products, 4 walks\nTop 10 Best Practices', deny)).toEqual([])
+  })
+
+  it('ignores only the kind identifier, not a real name beside it', () => {
+    const kind = ban + 'zai-outside-role-line'
+    expect(scanText('a.ts', `kind: '${kind}'`, deny)).toEqual([])
+    expect(scanText('a.ts', `${kind} ${employer}`, deny)).toHaveLength(1)
   })
 })
