@@ -97,7 +97,7 @@ function main(): void {
   for (const s of stats.stats) console.log(`${stats.generatedAt} ${s.metric}=${s.value}`)
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (import.meta.main) {
   try {
     main()
   } catch (e) {
