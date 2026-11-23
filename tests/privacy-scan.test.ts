@@ -49,4 +49,15 @@ describe('scanText', () => {
       expect(out).not.toContain(leak)
     }
   })
+
+  it('flags grid and street addresses without echoing them', () => {
+    const text = '100 N 200 E\nlive at 42 Maple Street.\n12 West 300 South'
+    const out = scanText('a.md', text, deny)
+    expect(out.map((f) => [f.line, f.kind])).toEqual([[1, 'address'], [2, 'address'], [3, 'address']])
+    expect(JSON.stringify(out)).not.toContain('Maple')
+  })
+
+  it('does not flag ordinary numeric prose', () => {
+    expect(scanText('a.md', 'Node 24 runs\n3 products, 4 walks\nTop 10 Best Practices', deny)).toEqual([])
+  })
 })
