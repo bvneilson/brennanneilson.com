@@ -39,17 +39,20 @@ jobs:
         run: npx playwright test truth/site.spec.ts --trace off
         env:
           SITE_URL: http://localhost:3000
+      - name: Detect walks this PR changes
+        id: detect
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: .github/scripts/changed-walks.sh "$BASE_REF"
       - name: Walks for projects this PR changes
+        if: steps.detect.outputs.blocking != ''
         env:
           SITE_URL: http://localhost:3000
-          BASE_REF: ${{ github.base_ref }}
+          BLOCKING: ${{ steps.detect.outputs.blocking }}
         run: |
-          eval "$(.github/scripts/changed-walks.sh "$BASE_REF" | sed -E 's/^([a-z]+)=(.*)$/\1="\2"/')"
-          echo "blocking walks: ${blocking:-none}"
-          if [ -n "${blocking}" ]; then
-            # shellcheck disable=SC2086
-            npx playwright test ${blocking} --trace off
-          fi
+          echo "blocking walks: ${BLOCKING}"
+          # shellcheck disable=SC2086
+          npx playwright test ${BLOCKING} --trace off
 
   # Informational: every product walk the PR did not touch. Never blocks the merge.
   other-walks:
@@ -67,13 +70,16 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx playwright install --with-deps chromium
-      - name: Remaining product walks
+      - name: Detect walks this PR leaves alone
+        id: detect
         env:
           BASE_REF: ${{ github.base_ref }}
+        run: .github/scripts/changed-walks.sh "$BASE_REF"
+      - name: Remaining product walks
+        if: steps.detect.outputs.other != ''
+        env:
+          OTHER: ${{ steps.detect.outputs.other }}
         run: |
-          eval "$(.github/scripts/changed-walks.sh "$BASE_REF" | sed -E 's/^([a-z]+)=(.*)$/\1="\2"/')"
-          echo "informational walks: ${other:-none}"
-          if [ -n "${other}" ]; then
-            # shellcheck disable=SC2086
-            npx playwright test ${other} --trace off
-          fi
+          echo "informational walks: ${OTHER}"
+          # shellcheck disable=SC2086
+          npx playwright test ${OTHER} --trace off

@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Splits the product walks into those a PR touches (blocking) and the rest (informational), R6.
 # Usage: changed-walks.sh <base-ref>   (run after checkout with fetch-depth 0)
-# Prints two lines: "blocking=<space-separated spec paths>" and "other=<space-separated spec paths>".
+# Writes "blocking=<space-separated spec paths>" and "other=<...>" to $GITHUB_OUTPUT (stdout when unset).
+# Any error exits non-zero, so the calling step (and the required gate) fails closed.
 # A change to src/content/projects.ts is treated conservatively: every product walk blocks.
 set -euo pipefail
 base="${1:?base ref required}"
@@ -26,5 +27,8 @@ for f in "${all[@]}"; do
   fi
 done
 
-echo "blocking=${blocking[*]:-}"
-echo "other=${other[*]:-}"
+out="${GITHUB_OUTPUT:-/dev/stdout}"
+{
+  echo "blocking=${blocking[*]:-}"
+  echo "other=${other[*]:-}"
+} >> "$out"
