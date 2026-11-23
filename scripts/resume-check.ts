@@ -9,17 +9,10 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { readReviewedAt } from '../src/lib/resume.ts';
 import { resumeFreshness } from '../src/lib/resume-freshness.ts';
 
 const DEFAULT_PATH = fileURLToPath(new URL('../src/content/resume.md', import.meta.url));
-
-/** The `reviewedAt` value from the leading `---` front-matter block, or undefined. */
-export function readReviewedAt(markdown: string): string | undefined {
-  const block = /^---\r?\n([\s\S]*?)\r?\n---/.exec(markdown);
-  if (!block) return undefined;
-  const line = /^reviewedAt:\s*(.+?)\s*$/m.exec(block[1]);
-  return line?.[1].replace(/^["']|["']$/g, '');
-}
 
 export function checkResume(path: string, now: Date): string {
   if (!existsSync(path)) return 'unpublished';

@@ -5,12 +5,11 @@
 
 import { readFileSync } from 'node:fs';
 import { projects as v1Projects } from '../src/content/projects.ts';
+import { SITE_CLAIM, SITE_SLUG } from '../src/content/site-claim.ts';
 import type { ClaimResult, Project, TruthResults } from '../src/content/types.ts';
 
-/** The self-walk's slug. It is not a Project, so it is appended to every result set. */
-export const SITE_SLUG = 'site';
-// Only what site.spec proves today (R15). Task 9 adds the resume PDF clause with its assertion.
-export const SITE_CLAIM = 'This site: every link works and nothing errors.';
+// Defined in a pure module so pages can read them without importing this CLI (and node:fs).
+export { SITE_CLAIM, SITE_SLUG };
 
 /** Playwright project names. A claim must pass in every one of them. */
 const VIEWPORTS = ['desktop', 'mobile'];

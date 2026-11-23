@@ -1,6 +1,7 @@
 import { execFileSync } from 'node:child_process'
 import { readFileSync } from 'node:fs'
 import { extname, join } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { hashTerm, tokenize } from './privacy-hash.ts'
 
 export type FindingKind = 'secret' | 'phone' | 'address' | 'denylist' | 'banzai-outside-role-line'
@@ -69,13 +70,30 @@ function isBinary(path: string, buf: Buffer): boolean {
   return BINARY_EXT.has(extname(path).toLowerCase()) || buf.includes(0)
 }
 
+/** A real denylist holds hundreds of hashes. Anything smaller means it was emptied or truncated. */
+export const MIN_DENY_HASHES = 250
+
+/** Fails closed: a missing, malformed, empty or truncated denylist throws instead of scanning with nothing. */
 export function loadDenyHashes(file: string): Set<string> {
-  const raw = JSON.parse(readFileSync(file, 'utf8')) as { hashes: string[] }
-  return new Set(raw.hashes)
+  let raw: unknown
+  try {
+    raw = JSON.parse(readFileSync(file, 'utf8'))
+  } catch {
+    throw new Error('denylist is missing or not valid JSON')
+  }
+  const hashes = (raw as { hashes?: unknown } | null)?.hashes
+  if (!Array.isArray(hashes) || !hashes.every((h) => typeof h === 'string' && /^[0-9a-f]{64}$/.test(h))) {
+    throw new Error('denylist "hashes" must be an array of 64-hex sha256 strings')
+  }
+  const set = new Set<string>(hashes)
+  if (set.size < MIN_DENY_HASHES) {
+    throw new Error(`denylist has ${set.size} hashes, expected at least ${MIN_DENY_HASHES}`)
+  }
+  return set
 }
 
 function main(): void {
-  const deny = loadDenyHashes(new URL('./privacy-denylist.json', import.meta.url).pathname)
+  const deny = loadDenyHashes(fileURLToPath(new URL('./privacy-denylist.json', import.meta.url)))
   const root = execFileSync('git', ['rev-parse', '--show-toplevel'], { encoding: 'utf8' }).trim()
   const files = execFileSync('git', ['ls-files', '-z'], { cwd: root, encoding: 'utf8', maxBuffer: 1 << 28 })
     .split('\0')
@@ -103,4 +121,11 @@ function main(): void {
   console.log(`privacy scan: ${files.length} tracked files clean`)
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) main()
+if (import.meta.main) {
+  try {
+    main()
+  } catch (e) {
+    console.error(`privacy scan failed: ${e instanceof Error ? e.message.split('\n')[0] : 'unknown error'}`)
+    process.exit(1)
+  }
+}

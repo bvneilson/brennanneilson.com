@@ -1,11 +1,19 @@
 import type { Page } from '@playwright/test';
+import { PDFDocument } from 'pdf-lib';
 import { expect, SITE_URL, test } from './fixtures.ts';
 
-// The self-walk: every link on this site works and nothing errors (the guard fails the walk on any
-// console error or failed request). The resume PDF check joins when the PDF exists (Task 9, R4).
+// The self-walk, one test per clause of SITE_CLAIM: every link works, the resume PDF downloads,
+// and nothing errors. "Nothing errors" is the guard in fixtures.ts, which fails a walk on any
+// console error, uncaught exception or failed request on this site, at both viewports.
 
 /** Hosts that answer bots with 999/403. Their links must be well-formed https, and nothing more. */
 const BOT_BLOCKING_HOSTS = ['linkedin.com', 'www.linkedin.com'];
+
+/**
+ * Every page the site has. The crawl must reach each one, so a page that loses its last link
+ * can't silently drop out of the "nothing errors" check.
+ */
+const PAGES = ['/', '/coo', '/resume', '/verified'];
 
 const origin = new URL(SITE_URL).origin;
 
@@ -24,6 +32,9 @@ async function crawl(page: Page): Promise<{ pages: string[]; outbound: string[] 
     if (!(res.headers()['content-type'] ?? '').includes('text/html')) continue;
     const nav = await page.goto(url);
     expect.soft(nav?.status(), url).toBeLessThan(400);
+    // Let hydration, effects and link prefetches finish here, so an error they raise lands on this
+    // page's walk instead of being cut off by the next navigation.
+    await page.waitForLoadState('networkidle');
 
     // Against the layout viewport (clientWidth). Mobile Chrome zooms out to fit wide content, so
     // innerWidth grows with the overflow and would hide it.
@@ -50,7 +61,19 @@ async function crawl(page: Page): Promise<{ pages: string[]; outbound: string[] 
 test.describe('site', () => {
   test('every internal link works, with no errors and no horizontal overflow', async ({ page }) => {
     const { pages } = await crawl(page);
-    expect(pages.length).toBeGreaterThanOrEqual(1);
+    expect(pages).toEqual(expect.arrayContaining(PAGES.map((p) => `${origin}${p}`)));
+  });
+
+  test('the resume PDF downloads', async ({ page }) => {
+    const res = await page.request.get(`${origin}/resume.pdf`);
+    expect(res.status()).toBe(200);
+    expect(res.headers()['content-type']).toContain('application/pdf');
+    const body = await res.body();
+    expect(body.subarray(0, 5).toString('latin1')).toBe('%PDF-');
+    // A real PDF with pages, printed from the resume (scripts/resume-pdf.ts stamps the source hash).
+    const pdf = await PDFDocument.load(body);
+    expect(pdf.getPageCount()).toBeGreaterThanOrEqual(1);
+    expect(pdf.getSubject()).toMatch(/^sha256:[0-9a-f]{64}$/);
   });
 
   test('every outbound link resolves', async ({ page }) => {

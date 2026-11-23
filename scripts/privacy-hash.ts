@@ -14,7 +14,7 @@ export function hashTerm(term: string): string {
   return createHash('sha256').update(normalizeTerm(term)).digest('hex')
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (import.meta.main) {
   const terms = process.argv.slice(2)
   if (terms.length === 0) {
     console.error('usage: node scripts/privacy-hash.ts "<term>" [...]')
