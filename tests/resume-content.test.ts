@@ -9,7 +9,8 @@ import { parseResume, readReviewedAt } from '../src/lib/resume.ts';
 const PATH = 'src/content/resume.md';
 const md = readFileSync(new URL(`../${PATH}`, import.meta.url), 'utf8');
 const EMPLOYER = new RegExp('ban' + 'zai', 'i');
-const SCRUBBED = ['FI' + 'CO', 'Post' + 'Hog', 'ECS', 'RDS'];
+// Pathom and Polylith hint at the employer's internal stack (R39).
+const SCRUBBED = ['FI' + 'CO', 'Post' + 'Hog', 'ECS', 'RDS', 'Pathom', 'Polylith'];
 
 describe('src/content/resume.md', () => {
   it('has a valid reviewedAt in its front-matter (R37)', () => {

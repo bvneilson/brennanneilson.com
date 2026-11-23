@@ -17,7 +17,7 @@ I'm a senior software engineer with 10 years of shipping production web apps. I 
 - **AI / LLM:** LLM integration in production, AI agents and orchestration, evaluation and quality gating, prompt design, Claude Code, Model Context Protocol (MCP), Anthropic API, AI-assisted developer tooling
 - **Languages:** JavaScript, TypeScript, Clojure, ClojureScript, SQL, PHP
 - **Frontend:** React, Vue (Nuxt, Vuetify), Tailwind CSS, accessible UI (WCAG AA), Figma to code
-- **Backend / Data:** Node.js, PostgreSQL, Pathom, Polylith, Supabase, event-sourced pipelines
+- **Backend / Data:** Node.js, PostgreSQL, Supabase, event-sourced pipelines
 - **Cloud / Ops:** AWS, Vercel, production incident investigation
 
 ## Experience
