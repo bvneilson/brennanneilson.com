@@ -1,0 +1,79 @@
+name: ci
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  # The merge-blocking check. Required on main as "gate".
+  gate:
+    name: gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run privacy
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - name: Start the built site
+        run: |
+          npm start > site.log 2>&1 &
+          for _ in $(seq 1 60); do
+            curl -fsS http://localhost:3000/ > /dev/null && exit 0
+            sleep 1
+          done
+          cat site.log
+          exit 1
+      - name: Site walk (local build)
+        run: npx playwright test truth/site.spec.ts --trace off
+        env:
+          SITE_URL: http://localhost:3000
+      - name: Walks for projects this PR changes
+        env:
+          SITE_URL: http://localhost:3000
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          eval "$(.github/scripts/changed-walks.sh "$BASE_REF" | sed -E 's/^([a-z]+)=(.*)$/\1="\2"/')"
+          echo "blocking walks: ${blocking:-none}"
+          if [ -n "${blocking}" ]; then
+            # shellcheck disable=SC2086
+            npx playwright test ${blocking} --trace off
+          fi
+
+  # Informational: every product walk the PR did not touch. Never blocks the merge.
+  other-walks:
+    name: other-walks (informational)
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Remaining product walks
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          eval "$(.github/scripts/changed-walks.sh "$BASE_REF" | sed -E 's/^([a-z]+)=(.*)$/\1="\2"/')"
+          echo "informational walks: ${other:-none}"
+          if [ -n "${other}" ]; then
+            # shellcheck disable=SC2086
+            npx playwright test ${other} --trace off
+          fi

@@ -1,0 +1,107 @@
+name: truth-nightly
+
+on:
+  schedule:
+    - cron: '37 9 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: truth-nightly
+  cancel-in-progress: false
+
+jobs:
+  walk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_REPO: ${{ github.repository }}
+      SITE_URL: ${{ vars.SITE_URL }}
+      RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+
+      - name: Claim-walks
+        id: walk
+        continue-on-error: true
+        run: npx playwright test --trace off
+
+      - name: Build results.json
+        if: always()
+        run: node truth/report.ts truth/out/report.json > truth/out/results.json
+
+      - name: Publish results.json to truth-results
+        if: always()
+        run: |
+          set -euo pipefail
+          dir="$(mktemp -d)"
+          cp truth/out/results.json "$dir/results.json"
+          cd "$dir"
+          git init -q -b truth-results
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add results.json
+          git commit -q -m "truth results $(date -u +%Y-%m-%dT%H:%MZ)"
+          auth="$(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
+          git -c "http.extraheader=AUTHORIZATION: basic ${auth}" \
+            push --force "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}.git" truth-results
+
+      - name: Open or close a truth-failure issue per slug
+        if: always()
+        run: |
+          set -euo pipefail
+          gh label create truth-failure --color B60205 --description 'A claim-walk or review check is failing' 2>/dev/null || true
+          open_issue() { # title -> number or empty
+            gh issue list --label truth-failure --state open --limit 200 --json number,title \
+              | jq -r --arg t "$1" '.[] | select(.title == $t) | .number' | head -n1
+          }
+          jq -r '.results[] | [.slug, .status] | @tsv' truth/out/results.json | while IFS=$'\t' read -r slug status; do
+            title="Truth walk failing: ${slug}"
+            num="$(open_issue "$title")"
+            if [ "$status" = fail ]; then
+              body="The nightly claim-walk for \`${slug}\` failed. Run: ${RUN_URL}"
+              if [ -n "$num" ]; then
+                gh issue comment "$num" --body "Still failing. ${body}"
+              else
+                gh issue create --label truth-failure --title "$title" --body "$body"
+              fi
+            elif [ -n "$num" ]; then
+              gh issue close "$num" --comment "Passing again. Run: ${RUN_URL}"
+            fi
+          done
+
+      - name: Resume review check
+        if: always()
+        run: |
+          set -euo pipefail
+          gh label create truth-failure --color B60205 --description 'A claim-walk or review check is failing' 2>/dev/null || true
+          state="$(node scripts/resume-check.ts)"
+          echo "resume freshness: ${state}"
+          title='Resume review due'
+          num="$(gh issue list --label truth-failure --state open --limit 200 --json number,title \
+            | jq -r --arg t "$title" '.[] | select(.title == $t) | .number' | head -n1)"
+          case "$state" in
+            review-due|hidden)
+              if [ -z "$num" ]; then
+                gh issue create --label truth-failure --title "$title" \
+                  --body "Resume freshness is \`${state}\`. Diff against the source resume, re-scrub, and bump reviewedAt only in that PR. Run: ${RUN_URL}"
+              fi ;;
+            *)
+              if [ -n "$num" ]; then gh issue close "$num" --comment "Resume freshness is \`${state}\`."; fi ;;
+          esac
+
+      - name: Fail the run if any walk failed
+        if: always() && steps.walk.outcome == 'failure'
+        run: |
+          echo 'One or more claim-walks failed. See the truth-failure issues.'
+          exit 1
