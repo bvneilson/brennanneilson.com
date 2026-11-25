@@ -1,19 +1,19 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-25T03:49:47.944Z",
+  "generatedAt": "2026-11-25T04:49:53.541Z",
   "stats": [
     {
       "metric": "coo_repo_prs_merged",
       "label": "pull requests merged into my COO's codebase since June 17, 2026",
       "value": 1064,
-      "asOf": "2026-11-25T03:49:47.944Z",
+      "asOf": "2026-11-25T04:49:53.541Z",
       "source": "GitHub search API"
     },
     {
       "metric": "prs_merged_last_7d",
       "label": "pull requests merged across my projects in the last 7 days",
-      "value": 59,
-      "asOf": "2026-11-25T03:49:47.944Z",
+      "value": 60,
+      "asOf": "2026-11-25T04:49:53.541Z",
       "source": "GitHub search API"
     }
   ]
