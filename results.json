@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-11-27T19:12:30.653Z",
+  "runUrl": "https://github.com/bvneilson/brennanneilson.com/actions/runs/46054743349",
+  "results": [
+    {
+      "slug": "draw-night",
+      "claim": "Add names, group households, pass one phone around: everyone draws a Secret Santa name, and nobody gets themselves, their partner, or a swap.",
+      "status": "pass",
+      "finishedAt": "2026-11-27T19:12:30.653Z",
+      "runUrl": "https://github.com/bvneilson/brennanneilson.com/actions/runs/46054743349"
+    },
+    {
+      "slug": "fantasy-autopilot",
+      "claim": "Free fantasy-football guides plus a $49 playbook kit for running your team with your own AI agent.",
+      "status": "pass",
+      "finishedAt": "2026-11-27T19:12:30.653Z",
+      "runUrl": "https://github.com/bvneilson/brennanneilson.com/actions/runs/46054743349"
+    },
+    {
+      "slug": "brennan-builds",
+      "claim": "Click through 12 live demo websites without signing up. Custom builds from $500.",
+      "status": "pass",
+      "finishedAt": "2026-11-27T19:12:30.653Z",
+      "runUrl": "https://github.com/bvneilson/brennanneilson.com/actions/runs/46054743349"
+    },
+    {
+      "slug": "golf-toolbox",
+      "claim": "Answer three questions about your swing and get a shaft flex, weight and kick-point recommendation, no account needed.",
+      "status": "pass",
+      "finishedAt": "2026-11-27T19:12:30.653Z",
+      "runUrl": "https://github.com/bvneilson/brennanneilson.com/actions/runs/46054743349"
+    },
+    {
+      "slug": "site",
+      "claim": "This site: every link works, the resume PDF downloads, and nothing errors.",
+      "status": "pass",
+      "finishedAt": "2026-11-27T19:12:30.653Z",
+      "runUrl": "https://github.com/bvneilson/brennanneilson.com/actions/runs/46054743349"
+    }
+  ]
+}
